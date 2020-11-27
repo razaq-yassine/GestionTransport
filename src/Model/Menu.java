@@ -194,7 +194,11 @@ public class Menu {
     }
 
     private static void MenuConsulterCargaisonById() {
-
+        cyan("Consultation d'une Cargaison: ");
+        cyan("Donnez l'id du Marchandise: ");
+        Scanner input = new Scanner(System.in);
+        int a=input.nextInt();
+        MyDatabase.findCargaisonById(a).Afficher();
     }
 
     private static void MenuEnregistrerCargaisonsinFile() {
@@ -204,6 +208,7 @@ public class Menu {
     }
 
     private static void MenuAddMarchandiseInCargaison() {
+
     }
 
     private static void MenuAddCargaison() {

@@ -80,7 +80,7 @@ public class MyDatabase {
     }
     public static Marchandise findMarchandise(int id_Marchandise) {
         boolean found = false;
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < Marchandise.getNumberOfInstances(); i++) {
             if (marchandises[i].getId_Marchandise() == id_Marchandise) {
                 found = true;
                 return marchandises[i];
@@ -89,6 +89,21 @@ public class MyDatabase {
         Menu.error("Model.Marchandise with id: " + Integer.toString(id_Marchandise) + " not found");
         System.exit(0);
         return marchandises[0];
+    }
+    public static Cargaison findCargaisonById(int Id_Cargaison) {
+        for (int i=0; i<Ca_Routieere.getNumberOfInstancesRoutiere(); i++){
+            if (ca_routieeres[i].getId_Cargaison() == Id_Cargaison){
+                return ca_routieeres[i];
+            }
+        }
+        for (int i=0; i<Ca_Aerienne.getNumberOfInstancesAerienne(); i++){
+            if (ca_aeriennes[i].getId_Cargaison() == Id_Cargaison){
+                return ca_aeriennes[i];
+            }
+        }
+        Menu.error("Model.Cargaison with id: " + Integer.toString(Id_Cargaison) + " not found");
+        System.exit(0);
+        return ca_aeriennes[1];
     }
     public static void AddMarchandise(float poids_Marchandise, float volume_Marchandie){
         marchandises[Marchandise.getNumberOfInstances()] = new Marchandise(poids_Marchandise, volume_Marchandie);
@@ -110,6 +125,7 @@ public class MyDatabase {
         ca_routieeres[Ca_Routieere.getNumberOfInstancesRoutiere()] = new Ca_Routieere(distance_Cargaison);
         Ca_Routieere.setNumberOfInstancesRoutiere(Ca_Routieere.getNumberOfInstancesRoutiere()+1);
     }
+
     public static void SupprimerCargaison(int id_cargaison) {
         for (int i=0; i<Ca_Routieere.getNumberOfInstancesRoutiere();i++){
             if (ca_routieeres[i].getId_Cargaison() == id_cargaison){
@@ -132,4 +148,5 @@ public class MyDatabase {
             }
         }
     }
+
 }
