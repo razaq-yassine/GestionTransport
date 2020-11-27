@@ -110,7 +110,6 @@ public class MyDatabase {
         ca_routieeres[Ca_Routieere.getNumberOfInstancesRoutiere()] = new Ca_Routieere(distance_Cargaison);
         Ca_Routieere.setNumberOfInstancesRoutiere(Ca_Routieere.getNumberOfInstancesRoutiere()+1);
     }
-
     public static void SupprimerCargaison(int id_cargaison) {
         for (int i=0; i<Ca_Routieere.getNumberOfInstancesRoutiere();i++){
             if (ca_routieeres[i].getId_Cargaison() == id_cargaison){

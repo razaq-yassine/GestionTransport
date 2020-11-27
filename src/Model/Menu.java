@@ -194,6 +194,7 @@ public class Menu {
     }
 
     private static void MenuConsulterCargaisonById() {
+
     }
 
     private static void MenuEnregistrerCargaisonsinFile() {
@@ -206,7 +207,33 @@ public class Menu {
     }
 
     private static void MenuAddCargaison() {
+        cyan("Ajout de cargaison");
+        purple("Choississez le type: ");
+        warnning("1: Cargaison aerienne");
+        warnning("2: Cargaison routiere");
+        Scanner input = new Scanner(System.in);
+        int a = input.nextInt();
+        switch (a){
+            case 1: MenuAddCargaisonAerienne(); break;
+            case 2: MenuAddCargaisonRoutiere(); break;
+            default: error("Wrong Input"); IAdmin(); break;
+        }
+    }
 
+    private static void MenuAddCargaisonRoutiere() {
+        Scanner input = new Scanner(System.in);
+        cyan("Ajout de cargaison ROUTIERE");
+        warnning1("Distance: ");
+        Double distance = input.nextDouble();
+        MyDatabase.AddCa_Routiere(distance);
+    }
+
+    private static void MenuAddCargaisonAerienne() {
+        Scanner input = new Scanner(System.in);
+        cyan("Ajout de cargaison AERIENNE");
+        warnning1("Distance: ");
+        Double distance = input.nextDouble();
+        MyDatabase.AddCa_Aerienne(distance);
     }
 
     public static void Spliter(){
