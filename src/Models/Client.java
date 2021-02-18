@@ -1,4 +1,4 @@
-package Model;
+package Models;
 
 import Repository.*;
 
@@ -51,8 +51,8 @@ public class Client extends User {
 
     }
     public void ConsulterToutesLesCargaison(){
-        Ca_Routieere ca_routieeres[] = MyDatabase.getCa_routieeres();
-        Ca_Aerienne ca_aerienne[] = MyDatabase.getCa_aeriennes();
+        Ca_Routieere[] ca_routieeres = MyDatabase.getCa_routieeres();
+        Ca_Aerienne[] ca_aerienne = MyDatabase.getCa_aeriennes();
         Menu.error("Cargaison Routiere");
         Menu.error("Number: "+ Integer.toString(Ca_Routieere.getNumberOfInstancesRoutiere()));
         Menu.Spliter();

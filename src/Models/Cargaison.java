@@ -1,15 +1,15 @@
-package Model;
+package Models;
 
 import Repository.MyDatabase;
 
-public class Cargaison {
+public abstract class Cargaison {
     private static int count = 1000;
     private int id_Cargaison;
     private double distance_Cargaison;
     private double cout_Cargaison;
     static private int numberOfInstancesCargaison = 0;
 
-    Cargaison(double distance_Cargaison) {
+    public Cargaison(double distance_Cargaison) {
         id_Cargaison=++count;
         this.distance_Cargaison = distance_Cargaison;
     }
@@ -97,9 +97,7 @@ public class Cargaison {
         return VolumeTotale;
     }
 
-    public double Cout() {
-        return 0;
-    }
+    public abstract double Cout();
 
     public int NumberOfMarchandises(){
         Marchandise[] marchandises = MyDatabase.getMarchandises();

@@ -1,6 +1,4 @@
-package Model;
-
-import com.sun.org.apache.xml.internal.res.XMLErrorResources_tr;
+package Models;
 
 public class Marchandise {
     static private int count = 1000;

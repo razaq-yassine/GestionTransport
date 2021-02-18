@@ -1,4 +1,4 @@
-package Model;
+package Models;
 
 public class Ca_Routieere extends Cargaison {
     static private int numberOfInstancesRoutiere = 0;

@@ -1,15 +1,14 @@
 package Repository;
-import Model.*;
-import org.jetbrains.annotations.Contract;
+import Models.*;
 
 public class MyDatabase {
 
     private static int n =100;
-    static  Marchandise[] marchandises = new Marchandise[n];
-    static  Ca_Aerienne[] ca_aeriennes = new Ca_Aerienne[n];
-    static  Ca_Routieere[] ca_routieeres = new Ca_Routieere[n];
-    static  Client[] clients = new Client[n];
-    static  Admin[] admins = new Admin[n];
+    private static  Marchandise[] marchandises = new Marchandise[n];
+    private static  Ca_Aerienne[] ca_aeriennes = new Ca_Aerienne[n];
+    private static  Ca_Routieere[] ca_routieeres = new Ca_Routieere[n];
+    private static  Client[] clients = new Client[n];
+    private static  Admin[] admins = new Admin[n];
 
     public static Marchandise[] getMarchandises() {
         return marchandises;

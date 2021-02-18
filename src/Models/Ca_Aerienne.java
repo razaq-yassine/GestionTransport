@@ -1,4 +1,4 @@
-package Model;
+package Models;
 
 public class Ca_Aerienne extends Cargaison{
     static private int numberOfInstancesAerienne = 0;
@@ -23,5 +23,16 @@ public class Ca_Aerienne extends Cargaison{
             return 12*super.getDistance_Cargaison()*PoidsTotale();
         }
     }
+    public void Afficher() {
+        Menu.error("Afficher from Aerieene");
+        Menu.warnning1("-Id: ");
+        System.out.println(Integer.toString(super.getId_Cargaison()));
+        Menu.warnning1("-Distance: ");
+        System.out.println(Double.toString(super.getDistance_Cargaison()));
+        Menu.warnning1("-Cout: ");
+        System.out.println(Double.toString(super.getCout_Cargaison()));
+        Menu.warnning1("-Nombre de marchandise: ");
+        System.out.println(Double.toString(NumberOfMarchandises()));
 
+    }
 }

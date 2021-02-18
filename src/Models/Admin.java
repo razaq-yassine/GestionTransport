@@ -1,4 +1,4 @@
-package Model;
+package Models;
 
 import Repository.MyDatabase;
 
@@ -6,7 +6,7 @@ public class Admin extends Client {
     static int NumberAdmin = 0;
 
     public static int getNumberAdmin() {
-        return NumberAdmin;
+         return NumberAdmin;
     }
 
     public Admin(String username_User, String password_User) {
