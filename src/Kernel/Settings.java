@@ -2,9 +2,10 @@ package Kernel;
 
 
 public class Settings {
-    public static String SettingsPath = "/run/media/yassine/239902B54C1F0D66/Yassine/SideProjects/LearningProjects/Java/GestionTransport/GestionTransport/src/Kernel/Settings.txt";
+    private static ClassLoader classLoader = Settings.class.getClassLoader();
+    public static String SettingsPath = "Kernel/Settings.txt";
     public static String DB_Type(){
-        return new MyFile(SettingsPath).ReadLines().get(0);
+        return new MyFile(classLoader.getResource(SettingsPath).getFile()).ReadLines().get(0);
     }
     public static String DB_FilePath(){
         return new MyFile(SettingsPath).ReadLines().get(1);
