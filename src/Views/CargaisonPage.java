@@ -1,5 +1,7 @@
 package Views;
 
+import Models.Cargaison;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -52,7 +54,7 @@ public class CargaisonPage implements ActionListener {
         label.setFont(Titlefont);
 
         message = new JLabel();
-        message.setBounds(80, 70, 150, 25);
+        message.setBounds(80, 70, 180, 25);
         message.setFont(Labelfont);
         message.setForeground(Color.red);
 
@@ -188,10 +190,28 @@ public class CargaisonPage implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == btnBack)
+        if (e.getSource() == btnSearch)
         {
-            HomePage homeP = new HomePage();
-            Layout.getInstance("test").switchPanel(homeP.initPanels(), HomePage.width, HomePage.height);
+            try {
+                int id = Integer.parseInt(text1.getText());
+
+                Cargaison c = SocieteTransport.ConsulterCargaison(id);
+                label2.setText("" + c.getId_Cargaison());
+                label4.setText("" + c.getDistance_Cargaison());
+                label6.setText("" + c.PoidsTotale());
+                label8.setText("" + c.VolumeTotale());
+                label10.setText("" + c.getCout_Cargaison());
+                label12.setText("" + c.getClass());
+
+            } catch (Exception E) {
+                JOptionPane.showMessageDialog(null, "ID invalide !!","Error",JOptionPane.ERROR_MESSAGE);
+            }
+
         }
+        if (e.getSource() == btnBack)
+            {
+                HomePage homeP = new HomePage();
+                Layout.getInstance("test").switchPanel(homeP.initPanels(), HomePage.width, HomePage.height);
+            }
     }
 }

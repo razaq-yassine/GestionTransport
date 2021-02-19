@@ -1,5 +1,7 @@
 package Views;
 
+import Models.Marchandise;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -52,7 +54,7 @@ public class MarchandisePage implements ActionListener {
         label.setFont(Titlefont);
 
         message = new JLabel();
-        message.setBounds(80, 70, 150, 25);
+        message.setBounds(80, 70, 180, 25);
         message.setFont(Labelfont);
         message.setForeground(Color.red);
 
@@ -142,6 +144,20 @@ public class MarchandisePage implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == btnSearch)
+        {
+            try {
+                int id = Integer.parseInt(text1.getText());
+
+                Marchandise m = SocieteTransport.ConsulterMarchandose(id);
+                label2.setText("" + m.getPoids_Marchandise());
+                label4.setText("" + m.getVolume_Marchandie());
+
+            } catch (Exception E) {
+                JOptionPane.showMessageDialog(null, "ID invalide !!","Error",JOptionPane.ERROR_MESSAGE);
+            }
+
+        }
         if (e.getSource() == btnBack)
         {
             HomePage homeP = new HomePage();

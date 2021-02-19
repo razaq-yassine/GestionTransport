@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.Arrays;
 
 final public class LoginPage implements ActionListener {
 
@@ -25,7 +26,7 @@ final public class LoginPage implements ActionListener {
     //Buttons
     static private JButton btnLogin, btnRegister, btnParam, btnSave, btnSaveRegister;
     //Labels
-    static private JLabel label1, label2, Message, Title, labelC, label3, label4, Title2, label5, label6, label7;
+    static private JLabel label1, label2, Message, Title, labelC, label3, label4, Title2, label5, label6, label7, message2;
     //text field
     static private JTextField text1, text2, text3;
     //password fiels
@@ -33,7 +34,7 @@ final public class LoginPage implements ActionListener {
     //JradioButtons
     static private JRadioButton radioRam, radioFile, radioAdmin, radioUser;
     //ButtonGroup
-    static private ButtonGroup btnGrp;
+    static private ButtonGroup btnGrp, btnGrp2;
 
     private void initButtons()
     {
@@ -124,6 +125,12 @@ final public class LoginPage implements ActionListener {
         label7.setFont(Labelfont2);
         label7.setForeground(Color.BLACK);
         label7.setVisible(false);
+
+        message2 = new JLabel();
+        message2.setBounds(10, 40, 300, 25);
+        message2.setFont(Labelfont);
+        message2.setForeground(Color.red);
+        message2.setVisible(false);
     }
 
     private void initTextField()
@@ -140,6 +147,7 @@ final public class LoginPage implements ActionListener {
                 btnGrp.clearSelection();
             }
         });
+
         //register
         text3 = new JTextField(15);
     }
@@ -157,6 +165,7 @@ final public class LoginPage implements ActionListener {
 
     private void initJradioButtons()
     {
+        //param
         radioRam = new JRadioButton("Ram DataBase");
         radioRam.setBounds(25,80,130,25);
         radioRam.addActionListener(new LoginPage());
@@ -169,7 +178,7 @@ final public class LoginPage implements ActionListener {
         btnGrp = new ButtonGroup();
         btnGrp.add(radioRam);
         btnGrp.add(radioFile);
-
+        //register
         radioAdmin = new JRadioButton("Admin");
         radioAdmin.setBounds(25,80,130,25);
         radioAdmin.addActionListener(new LoginPage());
@@ -179,7 +188,7 @@ final public class LoginPage implements ActionListener {
         radioUser.addActionListener(new LoginPage());
         radioUser.setSelected(true);
 
-        ButtonGroup btnGrp2 = new ButtonGroup();
+        btnGrp2 = new ButtonGroup();
         btnGrp2.add(radioAdmin);
         btnGrp2.add(radioUser);
     }
@@ -228,6 +237,7 @@ final public class LoginPage implements ActionListener {
     private void registerPage()
     {
         contentPanel.add(Title2);
+        contentPanel.add(message2);
 
         registerPanel = new JPanel();
         registerPanel.setLayout(new GridLayout(5,2));
@@ -264,21 +274,6 @@ final public class LoginPage implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == btnLogin)
-        {
-            if (text1.getText().equals("ahmed"))
-            {
-                Message.setText("Success!!");
-                Message.setForeground(Color.GREEN);
-                HomePage homeP = new HomePage();
-                Layout.getInstance("test").switchPanel(homeP.initPanels(), HomePage.width, HomePage.height);
-            } else
-            {
-                Message.setText("Identifiant et / ou mot de passe incorrect(s) !");
-                Message.setForeground(Color.RED);
-            }
-
-        }
         if (e.getSource() == btnParam)
         {
             if (btnParam.getName().equals("login"))
@@ -314,6 +309,75 @@ final public class LoginPage implements ActionListener {
         if (e.getSource() == radioRam || e.getSource() == radioFile)
         {
             text2.setText("");
+        }
+        if (e.getSource() == btnSaveRegister)
+        {
+            String login = text3.getText();
+            char[] pw = Pwtext3.getPassword();
+            char[] pw2 = Pwtext4.getPassword();
+            String type = "";
+            if (radioAdmin.isSelected())
+                type = "admin";
+            if (radioUser.isSelected())
+                type = "user";
+
+            if (login.length() >= 5)
+            {
+                if (pw.length >= 5)
+                {
+                    if (Arrays.equals(pw, pw2))
+                    {
+//                        System.out.println(login + " , " + Arrays.toString(pw) + " , " + type);
+                        if(SocieteTransport.register(login,Arrays.toString(pw),type))
+                        {
+                            text3.setText("");
+                            Pwtext3.setText("");
+                            Pwtext4.setText("");
+                            message2.setText("");
+                            btnParam.doClick();
+                            JOptionPane.showMessageDialog(null, "votre compte a été créé avec succès","Success",JOptionPane.INFORMATION_MESSAGE);
+                        } else {
+                            JOptionPane.showMessageDialog(null, "une erreur est survenue","Error",JOptionPane.ERROR_MESSAGE);
+                        }
+                    } else {
+                        message2.setText("le mot de passe de confirmation ne correspond pas!!");
+                    }
+                } else {
+                    message2.setText("Mot de passe doit contenir au moins 5 caractères!!");
+                }
+            } else {
+                message2.setText("login doit contenir au moins 5 caractères!!");
+            }
+
+        }
+        if (e.getSource() == btnLogin)
+        {
+            String login = text1.getText();
+            char[] pw = Pwtext2.getPassword();
+
+            if (login.length() >= 5)
+            {
+                if (pw.length >= 5)
+                {
+                    if (SocieteTransport.login(login,Arrays.toString(pw)))
+                    {
+                        Message.setText("Success!!");
+                        Message.setForeground(Color.GREEN);
+                        HomePage homeP = new HomePage();
+                        Layout.getInstance("test").switchPanel(homeP.initPanels(), HomePage.width, HomePage.height);
+
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Identifiant et / ou mot de passe incorrect(s) !","Error",JOptionPane.ERROR_MESSAGE);
+                    }
+                } else {
+                    Message.setText("Mot de passe doit contenir au moins 5 caractères!!");
+                    Message.setForeground(Color.RED);
+                }
+            } else {
+                Message.setText("login doit contenir au moins 5 caractères!!");
+                Message.setForeground(Color.RED);
+            }
+
         }
 
     }
@@ -365,6 +429,7 @@ final public class LoginPage implements ActionListener {
             text3Panel.setVisible(status);
             Pwtext3Panel.setVisible(status);
             Pwtext4Panel.setVisible(status);
+            message2.setVisible(status);
         } catch (Exception e)
         {
             e.printStackTrace();

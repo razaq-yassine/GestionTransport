@@ -134,6 +134,33 @@ public class AddCargaisonPage implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+
+        if (e.getSource() == btnAdd)
+        {
+            try {
+                if (text1.getText().length() > 0)
+                {
+                    double d = Double.parseDouble(text1.getText());
+                    String t = "";
+                    if (radioAerienne.isSelected())
+                        t = "Aerienne";
+                    if (radioRoutiere.isSelected())
+                        t = "Routiere";
+
+                    if (SocieteTransport.AjouterCargaison(d,t))
+                    {
+                        JOptionPane.showMessageDialog(null, "Ajout avec succès !!","Success",JOptionPane.INFORMATION_MESSAGE);
+                        text1.setText("");
+                    } else {
+                        message.setText("Diastance invalide !!");
+                    }
+                }
+            } catch (Exception E){
+                message.setText("Diastance invalide !!");
+            }
+
+        }
+
         if (e.getSource() == btnBack)
         {
             HomePage homeP = new HomePage();

@@ -23,7 +23,7 @@ public class AddMarchandiseToCargaison implements ActionListener {
     static private JButton btnAdd, btnBack;
     //Labels
     static private JLabel Title,message, label1, label2, label3;
-    //text field
+    //list
     static private JComboBox listC, listM;
 
     private void initButtons()
