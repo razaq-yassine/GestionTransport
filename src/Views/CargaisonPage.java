@@ -194,7 +194,7 @@ public class CargaisonPage implements ActionListener {
                         int id = Integer.parseInt(dataTableC.getValueAt(row, 0).toString());
                         System.out.println(id + " / " + distance + "/" +type);
                         // update
-                        if ( SocieteTransport.EditCargaison(id, distance, type) )
+                        if ( SocieteTransport.EditCargaison(id, distance) )
                             JOptionPane.showMessageDialog(null, "Cargaison a été modifier avec succès !!","Success",JOptionPane.INFORMATION_MESSAGE);
                         else
                             JOptionPane.showMessageDialog(null, "Error !!","Error",JOptionPane.ERROR_MESSAGE);

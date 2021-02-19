@@ -42,8 +42,8 @@ public class SocieteTransport {
     public static int NombreTotaleMarchandises(){
         return DB.getNumberOFMarchandises();
     }
-    public static boolean EditCargaison(int id_Cargaison, double distance_Cargaison, String type){
-        return DB.EditCargaison(id_Cargaison, distance_Cargaison, type);
+    public static boolean EditCargaison(int id_Cargaison, double distance_Cargaison){
+        return DB.EditCargaison(id_Cargaison, distance_Cargaison);
     }
 
     public static boolean EditMarchandise(int id_Marchandise, float poids, float volume, int id_Cargason){

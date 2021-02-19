@@ -6,7 +6,7 @@ import Kernel.Validate;
 import Models.*;
 
 import java.util.ArrayList;
-import java.util.List;
+
 
 public class DB {
     private static ArrayList DataBaseList = new ArrayList();
@@ -114,21 +114,10 @@ public class DB {
         return true;
     }
 
-    public static boolean EditCargaison(int id_cargaison, double distance_cargaison, String type) {
+    public static boolean EditCargaison(int id_cargaison, double distance_cargaison) {
         Cargaison C = FindCargaison(id_cargaison);
         if (C!=null){
             C.setDistance_Cargaison(distance_cargaison);
-            if (type.equalsIgnoreCase(C.Type()) )
-            {
-                if (type.equalsIgnoreCase("Aerienne")) {
-                    getCa_aeriennes().remove(C);
-                    getCa_routieeres().add((Ca_Routieere) C);
-                }
-                if (type.equalsIgnoreCase("Routiere")){
-                    getCa_routieeres().remove(C);
-                    getCa_aeriennes().add((Ca_Aerienne) C);
-                }
-            }
             saveDB();
             return true;
         }
@@ -241,4 +230,13 @@ public class DB {
         return DataBaseList;
     }
 
+    public static void main(String[] args) {
+        DB db = new DB();
+        Menu.cyan(Double.toString(FindCargaison(1003).getDistance_Cargaison()));
+        Menu.cyan(FindCargaison(1003).Type());
+        EditCargaison(1003, 1);
+        Menu.cyan(Double.toString(FindCargaison(1003).getDistance_Cargaison()));
+        Menu.cyan(FindCargaison(1003).Type());
+
+    }
 }
