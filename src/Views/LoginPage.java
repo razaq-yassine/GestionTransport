@@ -200,8 +200,6 @@ final public class LoginPage implements ActionListener {
         btnGrp2 = new ButtonGroup();
         btnGrp2.add(radioAdmin);
         btnGrp2.add(radioUser);
-
-
     }
 
     JPanel initPanels()
