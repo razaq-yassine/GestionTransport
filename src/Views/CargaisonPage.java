@@ -3,6 +3,7 @@ package Views;
 import Models.Cargaison;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import java.awt.*;
@@ -143,7 +144,7 @@ public class CargaisonPage implements ActionListener {
             for (Cargaison car : c) {
                 if ( check2(car.getId_Cargaison()) )
                 {
-                    model.addRow(new Object[]{"" + car.getId_Cargaison(), "" + car.getDistance_Cargaison(), "" + car.PoidsTotale(), "" + car.VolumeTotale(), "" + car.Cout(), "" + car.Type()});
+                    model.addRow(new Object[]{"" + car.getId_Cargaison(), "" + car.getDistance_Cargaison(), "" + car.PoidsTotale(), "" + car.VolumeTotale(), "" + car.Cout(), "" + car.Type(), "Supprimer"});
                 }
             }
         }
@@ -172,11 +173,17 @@ public class CargaisonPage implements ActionListener {
         model.addColumn("Volume");
         model.addColumn("Cout");
         model.addColumn("Type");
+        model.addColumn("Action");
+
         // Append a row
         for (Cargaison car : c) {
             model.addRow(new Object[]{"" + car.getId_Cargaison(), "" + car.getDistance_Cargaison(), "" + car.PoidsTotale(),
-                    "" + car.VolumeTotale(), "" + car.Cout(), "" + car.Type()});
+                    "" + car.VolumeTotale(), "" + car.Cout(), "" + car.Type(), "Supprimer"});
         }
+        DefaultTableCellRenderer rendar1 = new DefaultTableCellRenderer();
+        rendar1.setForeground(Color.red);
+
+        dataTableC.getColumnModel().getColumn(6).setCellRenderer(rendar1);
         dataTableC.putClientProperty("terminateEditOnFocusLost", true);
         dataTableC.addFocusListener(new FocusAdapter() {
             @Override
@@ -184,51 +191,67 @@ public class CargaisonPage implements ActionListener {
                 int row = dataTableC.getSelectedRow();
                 int column = dataTableC.getSelectedColumn();
                 try {
-//                    Object val = dataTableC.isCellSelected(row,column);
-                    if (dataTableC.isCellSelected(row,column))
+                    if (dataTableC.isColumnSelected(1))
                     {
-                        // new value
-                        double distance = Double.parseDouble(dataTableC.getValueAt(row, 1).toString());
-                        String type = dataTableC.getValueAt(row, 5).toString();
-                        // id is the primary key of my DB
-                        int id = Integer.parseInt(dataTableC.getValueAt(row, 0).toString());
-                        System.out.println(id + " / " + distance + "/" +type);
-                        // update
-                        if ( SocieteTransport.EditCargaison(id, distance) )
-                            JOptionPane.showMessageDialog(null, "Cargaison a été modifier avec succès !!","Success",JOptionPane.INFORMATION_MESSAGE);
-                        else
-                            JOptionPane.showMessageDialog(null, "Error !!","Error",JOptionPane.ERROR_MESSAGE);
-                        dataTableC.setFocusable(false);
-                        dataTableC.setFocusable(true);
+                        if (dataTableC.isCellSelected(row,column))
+                        {
+                            // new value
+                            double distance = Double.parseDouble(dataTableC.getValueAt(row, 1).toString());
+                            String type = dataTableC.getValueAt(row, 5).toString();
+                            // id is the primary key of my DB
+                            int id = Integer.parseInt(dataTableC.getValueAt(row, 0).toString());
+                            System.out.println(id + " / " + distance + "/" +type);
+                            // update
+                            if ( SocieteTransport.EditCargaison(id, distance) )
+                            {
+                                JOptionPane.showMessageDialog(null, "Cargaison a été modifier avec succès !!","Success",JOptionPane.INFORMATION_MESSAGE);
+                            }
+                            else
+                                JOptionPane.showMessageDialog(null, "Error !!","Error",JOptionPane.ERROR_MESSAGE);
+                        }
+
+                        ArrayList<Object> data = new ArrayList<Object>();
+                        data.add(model.getValueAt(row,0));
+                        data.add(model.getValueAt(row,1));
+                        data.add(model.getValueAt(row,2));
+                        data.add(model.getValueAt(row,3));
+                        data.add(model.getValueAt(row,4));
+                        data.add(model.getValueAt(row,5));
+                        model.removeRow(row);
+                        model.insertRow(row,new Object[]{"" + data.get(0), "" + data.get(1), "" + data.get(2),
+                                "" + data.get(3), "" + data.get(4), "" + data.get(5), "Supprimer"});
+                    }
+                     else if (dataTableC.isColumnSelected(6))
+                    {
+                       int rep = JOptionPane.showConfirmDialog(null, "Etes-vous sur de vouloir supprimer Cargaison : " + dataTableC.getValueAt(row, 0).toString());
+                       if (rep == 0)
+                       {
+                           JOptionPane.showMessageDialog(null, "Bravo !!","Success",JOptionPane.INFORMATION_MESSAGE);
+                       }
+                    }
+                    else {
+                        reset();
+                        check();
                     }
 
-                } catch (Exception E){
-                }
+                    dataTableC.clearSelection();
 
+                } catch (Exception ignored){}
             }
         });
-//        dataTableC.addKeyListener(new KeyAdapter() {
-//            public void keyPressed(KeyEvent e) {
-//                System.out.println("hi");
-//                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-//
-//                    int row = dataTableC.getSelectedRow();
-//
-//                    // new value
-//                    double distance = Double.parseDouble(dataTableC.getValueAt(row, 1).toString());
-//                    String type = dataTableC.getValueAt(row, 5).toString();
-//                    // id is the primary key of my DB
-//                    int id = Integer.parseInt(dataTableC.getValueAt(row, 0).toString());
-//
-//                    // update is my method to update. Update needs the id for
-//                    // the where clausule. resul is the value that will receive
-//                    // the cell and you need column to tell what to update.
-//                    Boolean b =SocieteTransport.EditCargaison(id, distance, type);
-//                    System.out.println(b);
-//
-//                }
-//            }
-//        });
+    }
+
+    private void reset()
+    {
+        while (true)
+        {
+            try{
+                model.removeRow(0);
+            } catch (Exception e){
+                break;
+            }
+
+        }
     }
 
     JPanel initPanels()
@@ -250,7 +273,7 @@ public class CargaisonPage implements ActionListener {
 
         tablePanel = new JPanel();
         tablePanel.setLayout(new BoxLayout(tablePanel, BoxLayout.Y_AXIS));
-        tablePanel.setBounds(20, 100, 500, 280);
+        tablePanel.setBounds(20, 100, 550, 280);
         tablePanel.add(new JScrollPane(dataTableC));
 
         contentPanel.add(tablePanel);
@@ -310,15 +333,6 @@ public class CargaisonPage implements ActionListener {
                 check();
                 int id = Integer.parseInt(text1.getText());
 
-//                Cargaison c = SocieteTransport.ConsulterCargaison(id);
-
-//                label2.setText("" + c.getId_Cargaison());
-//                label4.setText("" + c.getDistance_Cargaison());
-//                label6.setText("" + c.PoidsTotale());
-//                label8.setText("" + c.VolumeTotale());
-//                label10.setText("" + c.Cout());
-//                label12.setText("" + c.Type());
-
                 ArrayList<Object> data = new ArrayList<Object>();
                 while (true)
                 {
@@ -340,7 +354,7 @@ public class CargaisonPage implements ActionListener {
                     model.removeRow(0);
                 }
                 model.addRow(new Object[]{"" + data.get(0), "" + data.get(1), "" + data.get(2),
-                        "" + data.get(3), "" + data.get(4), "" + data.get(5)});
+                        "" + data.get(3), "" + data.get(4), "" + data.get(5), "Supprimer"});
             } catch (Exception E) {
                 JOptionPane.showMessageDialog(null, "ID invalide !!","Error",JOptionPane.ERROR_MESSAGE);
             }
@@ -349,7 +363,7 @@ public class CargaisonPage implements ActionListener {
         if (e.getSource() == btnBack)
             {
                 HomePage homeP = new HomePage();
-                Layout.getInstance("test").switchPanel(homeP.initPanels(), HomePage.width, HomePage.height);
+                Layout.getInstance("Home").switchPanel(homeP.initPanels(), HomePage.width, HomePage.height);
             }
     }
 }

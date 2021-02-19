@@ -380,6 +380,7 @@ final public class LoginPage implements ActionListener {
 
         }
 
+
     }
 
     private void emptyLoginComposant(boolean status)
