@@ -1,66 +1,78 @@
 
 import Kernel.Settings;
 import Models.*;
+import Repository.DB;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 public class SocieteTransport {
 
-    public static boolean login(String username, String Password){
-        return true;
+    public static User login(String username, String Password){
+        return DB.LoginAttempt(username,Password);
+        // test if User is null in gui means login-error
     }
     public static boolean register(String username, String Password, String Type){
         return true;
-    } // You can add Password confirmation in method of GUI Class
-    public static Cargaison ConsulterCargaison(int id_Cargaison){
-        return new Ca_Aerienne(13);
+        // You can add Password confirmation in method of GUI Class
     }
-    public static Marchandise ConsulterMarchandose(int id_Marchandise){
-        return new Marchandise(12,12);
+    public static Cargaison ConsulterCargaison(int id_Cargaison){
+        return DB.FindCargaison(id_Cargaison);
+    }
+    public static Marchandise ConsulterMarchandise(int id_Marchandise){
+        return DB.FindMarchandise(id_Marchandise);
     }
     public static boolean AjouterCargaison(double disrance_Cargaison, String Type){
-        return true;
+        if (Type.equals("Cargaison Aerienne")){
+            return DB.AddCa_Aerienne(disrance_Cargaison);
+        }
+        return DB.AddCa_Routiere(disrance_Cargaison);
     }
-    public static boolean AjouterMarchandise(double poids, double volume, int id_Cargason){
-        return true;
+    public static boolean AjouterMarchandise(float poids, float volume, int id_Cargason){
+        return DB.AddMarchandise(poids,volume,id_Cargason);
     }
     public static boolean AjouterMarchandiseDansCargaison(int id_Marchandise, int id_Cargaison){
-        return true;
+        Marchandise M = DB.FindMarchandise(id_Marchandise);
+        if (M!=null){
+            M.setId_Cargaison(id_Cargaison);
+            return true;
+        }
+        return false;
     }
     public static int NombreTotaleCargaisons(){
-        return 10;
+        return DB.getNumberOfCargaisons();
     }
     public static int NombreTotaleMarchandises(){
-        return 10;
+        return DB.getNumberOFMarchandises();
     }
-    public static boolean EditCargaison(int id_Cargaison, double disrance_Cargaison, String Type){
-        return true;
+    public static boolean EditCargaison(int id_Cargaison, double distance_Cargaison, String type){
+        return DB.EditCargaison(id_Cargaison, distance_Cargaison, type);
     }
-    public static boolean EditMarchandise(int id_Marchandise, double poids, double volume, int id_Cargason){
-        return true;
+
+    public static boolean EditMarchandise(int id_Marchandise, float poids, float volume, int id_Cargason){
+        return DB.EditMarchandise(id_Marchandise, poids, volume, id_Cargason);
     }
-    public static List<Marchandise> GetAllMarchandises(){
-        List<Marchandise> L1 = null;
-        L1.add(new Marchandise(13,12));
-        return L1;
+    public static ArrayList<Marchandise> GetAllMarchandises(){
+        return DB.getMarchandises();
     }
-    public static List<Cargaison> GetAllCargaisons(){
-        List<Cargaison> L1 = null;
-        L1.add(new Ca_Routieere(12));
-        return L1;
+    public static ArrayList<Cargaison> GetAllCargaisons(){
+        return DB.getAllCargaisons();
+
     }
     public static String DB_Type(){
         return Settings.DB_Type();
     }
     public String DB_File(){
-        return Settings.DB_FilePath();
+        return Settings.ExternalDB_FilePath();
     }
-    public boolean setDB_Type(String Type){
-        return Settings.setDB_Type(Type);
+    public boolean setDB_Type(String type){
+        Settings.setDB_Type(type);
+        return true;
     }
-    public boolean setDB_FilePath(String FilePath){
-        return Settings.setDB_FilePath(FilePath);
+    public boolean setExternalDB(String ExternalDBPath){
+        Settings.setExternalDB_FilePath(ExternalDBPath);
+        return true;
     }
 
 }
