@@ -19,6 +19,6 @@ public class Ca_Routieere extends Cargaison implements Serializable {
 
     @Override
     public String Type() {
-        return "Cargaison Routiere";
+        return "Routiere";
     }
 }

@@ -12,13 +12,13 @@ public class Layout extends JFrame {
     private Container mainPane ;
     private LoginPage loginP = new LoginPage();
 //    private HomePage homeP = new HomePage();
-//    private CargaisonPage carP = new CargaisonPage();
+    private CargaisonPage carP = new CargaisonPage();
 
     private Layout(String Title){
 //        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 //        int width = (int) screenSize.getWidth();
 //        int height = (int) screenSize.getHeight();
-        this.setSize(LoginPage.width, LoginPage.height);
+        this.setSize(CargaisonPage.width, CargaisonPage.height);
         setResizable(false);
         this.setTitle(Title);
         this.setLocationRelativeTo(null);
@@ -26,7 +26,7 @@ public class Layout extends JFrame {
         this.getContentPane().setBackground(Color.white);
 
         mainPane = this.getContentPane();
-        mainPane.add(loginP.initPanels());
+        mainPane.add(carP.initPanels());
 
 //        this.setExtendedState(JFrame.MAXIMIZED_BOTH); //full screen
         this.setVisible(true);

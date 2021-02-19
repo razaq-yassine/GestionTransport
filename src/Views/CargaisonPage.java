@@ -3,19 +3,20 @@ package Views;
 import Models.Cargaison;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellEditor;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.Date;
 
 public class CargaisonPage implements ActionListener {
 
     CargaisonPage(){};
 
     //size
-    static int width = 500;
-    static int height = 450;
+    static int width = 600;
+    static int height = 500;
     //Fonts
     static private Font Btnfont = new Font("Candra", Font.ITALIC, 12);
     static private Font Titlefont = new Font("Candara", Font.PLAIN, 20);
@@ -29,6 +30,12 @@ public class CargaisonPage implements ActionListener {
     static private JLabel Title,label, message, label0, label1, label2, label3, label4, label5, label6, label7, label8, label9, label10, label11, label12, label13;
     //text field
     static private JTextField text1;
+    //table
+    static private JTable dataTableC;
+    static private DefaultTableModel model;
+    //panel
+    static private JPanel info = new JPanel(), tablePanel = new JPanel(), contentPanel = new JPanel();
+
 
     private void initButtons()
     {
@@ -38,7 +45,7 @@ public class CargaisonPage implements ActionListener {
         btnSearch.addActionListener(new CargaisonPage());
 
         btnBack = new JButton("Retour");
-        btnBack.setBounds(390, 370, 80, 25);
+        btnBack.setBounds(490, 430, 80, 25);
         btnBack.addActionListener(new CargaisonPage());
 
     }
@@ -58,9 +65,9 @@ public class CargaisonPage implements ActionListener {
         message.setFont(Labelfont);
         message.setForeground(Color.red);
 
-        label0 = new JLabel("Cargaison Info");
-        label0.setBounds(110, 100, 300, 25);
-        label0.setFont(Titlefont2);
+//        label0 = new JLabel("Cargaison Info");
+//        label0.setBounds(110, 100, 300, 25);
+//        label0.setFont(Titlefont2);
 
         label1 = new JLabel("Id cargaison  :");
         label1.setFont(Labelinfo);
@@ -99,7 +106,7 @@ public class CargaisonPage implements ActionListener {
         label12.setFont(Labelinfo);
 
         label13 = new JLabel("EMSI © 2020-2021 All rights reserved ;)");
-        label13.setBounds(10, 380, 350, 25);
+        label13.setBounds(10, 440, 350, 25);
         label13.setFont(LabelC);
         label13.setForeground(Color.BLACK);
 
@@ -120,8 +127,108 @@ public class CargaisonPage implements ActionListener {
                     text1.setText("");
                     message.setText("* Champs numeric obligatoire (0-9)");
                 }
+                check();
+
             }
         });
+    }
+    // function permet d'eviter les doublants
+
+    static private void check()
+    {
+        ArrayList<Cargaison> c = SocieteTransport.GetAllCargaisons();
+        if (text1.getText().length() == 0 && SocieteTransport.NombreTotaleCargaisons() > model.getRowCount())
+        {
+            // Append a row
+            for (Cargaison car : c) {
+                if ( check2(car.getId_Cargaison()) )
+                {
+                    model.addRow(new Object[]{"" + car.getId_Cargaison(), "" + car.getDistance_Cargaison(), "" + car.PoidsTotale(), "" + car.VolumeTotale(), "" + car.Cout(), "" + car.Type()});
+                }
+            }
+        }
+    }
+    static private boolean check2(int val)
+    {
+        for (int i = 0; i < model.getRowCount(); i++)
+        {
+            String f = model.getValueAt(i,0).toString();
+            int v = Integer.parseInt(f);
+            if(v == val)
+                return false;
+        }
+        return true;
+    }
+
+    private void initTables(){
+        ArrayList<Cargaison> c = SocieteTransport.GetAllCargaisons();
+
+        model = new DefaultTableModel();
+        dataTableC = new JTable(model);
+        // Create a couple of columns
+        model.addColumn("ID");
+        model.addColumn("Distance");
+        model.addColumn("Poid");
+        model.addColumn("Volume");
+        model.addColumn("Cout");
+        model.addColumn("Type");
+        // Append a row
+        for (Cargaison car : c) {
+            model.addRow(new Object[]{"" + car.getId_Cargaison(), "" + car.getDistance_Cargaison(), "" + car.PoidsTotale(),
+                    "" + car.VolumeTotale(), "" + car.Cout(), "" + car.Type()});
+        }
+        dataTableC.putClientProperty("terminateEditOnFocusLost", true);
+        dataTableC.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                int row = dataTableC.getSelectedRow();
+                int column = dataTableC.getSelectedColumn();
+                try {
+//                    Object val = dataTableC.isCellSelected(row,column);
+                    if (dataTableC.isCellSelected(row,column))
+                    {
+                        // new value
+                        double distance = Double.parseDouble(dataTableC.getValueAt(row, 1).toString());
+                        String type = dataTableC.getValueAt(row, 5).toString();
+                        // id is the primary key of my DB
+                        int id = Integer.parseInt(dataTableC.getValueAt(row, 0).toString());
+                        System.out.println(id + " / " + distance + "/" +type);
+                        // update
+                        if ( SocieteTransport.EditCargaison(id, distance, type) )
+                            JOptionPane.showMessageDialog(null, "Cargaison a été modifier avec succès !!","Success",JOptionPane.INFORMATION_MESSAGE);
+                        else
+                            JOptionPane.showMessageDialog(null, "Error !!","Error",JOptionPane.ERROR_MESSAGE);
+                        dataTableC.setFocusable(false);
+                        dataTableC.setFocusable(true);
+                    }
+
+                } catch (Exception E){
+                }
+
+            }
+        });
+//        dataTableC.addKeyListener(new KeyAdapter() {
+//            public void keyPressed(KeyEvent e) {
+//                System.out.println("hi");
+//                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+//
+//                    int row = dataTableC.getSelectedRow();
+//
+//                    // new value
+//                    double distance = Double.parseDouble(dataTableC.getValueAt(row, 1).toString());
+//                    String type = dataTableC.getValueAt(row, 5).toString();
+//                    // id is the primary key of my DB
+//                    int id = Integer.parseInt(dataTableC.getValueAt(row, 0).toString());
+//
+//                    // update is my method to update. Update needs the id for
+//                    // the where clausule. resul is the value that will receive
+//                    // the cell and you need column to tell what to update.
+//                    Boolean b =SocieteTransport.EditCargaison(id, distance, type);
+//                    System.out.println(b);
+//
+//                }
+//            }
+//        });
     }
 
     JPanel initPanels()
@@ -129,8 +236,8 @@ public class CargaisonPage implements ActionListener {
         initLabels();
         initTextField();
         initButtons();
+        initTables();
 
-        JPanel contentPanel = new JPanel();
         contentPanel.setLayout(null);
         contentPanel.add(Title);
         contentPanel.add(btnBack);
@@ -138,10 +245,16 @@ public class CargaisonPage implements ActionListener {
         contentPanel.add(text1);
         contentPanel.add(btnSearch);
         contentPanel.add(message);
-        contentPanel.add(label0);
+//        contentPanel.add(label0);
         contentPanel.add(label13);
 
-        JPanel info = new JPanel();
+        tablePanel = new JPanel();
+        tablePanel.setLayout(new BoxLayout(tablePanel, BoxLayout.Y_AXIS));
+        tablePanel.setBounds(20, 100, 500, 280);
+        tablePanel.add(new JScrollPane(dataTableC));
+
+        contentPanel.add(tablePanel);
+
         info.setLayout(new BoxLayout(info, BoxLayout.Y_AXIS));
         info.setBounds(80, 140,350,180);
         info.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -181,8 +294,9 @@ public class CargaisonPage implements ActionListener {
         field6.add(label12);
         field6.setMaximumSize( field6.getPreferredSize() );
         info.add(field6);
+//        info.setVisible(false);
 
-        contentPanel.add(info);
+//        contentPanel.add(info);
         contentPanel.setBorder(BorderFactory.createTitledBorder("Cargaison"));
 
         return contentPanel;
@@ -193,16 +307,40 @@ public class CargaisonPage implements ActionListener {
         if (e.getSource() == btnSearch)
         {
             try {
+                check();
                 int id = Integer.parseInt(text1.getText());
 
-                Cargaison c = SocieteTransport.ConsulterCargaison(id);
-                label2.setText("" + c.getId_Cargaison());
-                label4.setText("" + c.getDistance_Cargaison());
-                label6.setText("" + c.PoidsTotale());
-                label8.setText("" + c.VolumeTotale());
-                label10.setText("" + c.Cout());
-                label12.setText("" + c.Type());
+//                Cargaison c = SocieteTransport.ConsulterCargaison(id);
 
+//                label2.setText("" + c.getId_Cargaison());
+//                label4.setText("" + c.getDistance_Cargaison());
+//                label6.setText("" + c.PoidsTotale());
+//                label8.setText("" + c.VolumeTotale());
+//                label10.setText("" + c.Cout());
+//                label12.setText("" + c.Type());
+
+                ArrayList<Object> data = new ArrayList<Object>();
+                while (true)
+                {
+                    String f = null;
+                    try {
+                        f = model.getValueAt(0,0).toString();
+                    } catch (Exception ignored){ break;}
+
+                    int val = Integer.parseInt(f);
+                    if (val == id)
+                    {
+                        data.add(model.getValueAt(0,0));
+                        data.add(model.getValueAt(0,1));
+                        data.add(model.getValueAt(0,2));
+                        data.add(model.getValueAt(0,3));
+                        data.add(model.getValueAt(0,4));
+                        data.add(model.getValueAt(0,5));
+                    }
+                    model.removeRow(0);
+                }
+                model.addRow(new Object[]{"" + data.get(0), "" + data.get(1), "" + data.get(2),
+                        "" + data.get(3), "" + data.get(4), "" + data.get(5)});
             } catch (Exception E) {
                 JOptionPane.showMessageDialog(null, "ID invalide !!","Error",JOptionPane.ERROR_MESSAGE);
             }

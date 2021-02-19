@@ -18,6 +18,6 @@ public class Ca_Aerienne extends Cargaison implements Serializable {
         }
     }
     public String Type() {
-        return "Cargaison Aerienne";
+        return "Aerienne";
     }
 }

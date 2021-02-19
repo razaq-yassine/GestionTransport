@@ -4,7 +4,6 @@ import Kernel.MyFile;
 import Kernel.Settings;
 import Kernel.Validate;
 import Models.*;
-import org.jetbrains.annotations.Contract;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -121,11 +120,11 @@ public class DB {
             C.setDistance_Cargaison(distance_cargaison);
             if (type.equalsIgnoreCase(C.Type()) )
             {
-                if (type.equalsIgnoreCase("Cargaison Aerienne")) {
+                if (type.equalsIgnoreCase("Aerienne")) {
                     getCa_aeriennes().remove(C);
                     getCa_routieeres().add((Ca_Routieere) C);
                 }
-                if (type.equalsIgnoreCase("Cargaison Routiere")){
+                if (type.equalsIgnoreCase("Routiere")){
                     getCa_routieeres().remove(C);
                     getCa_aeriennes().add((Ca_Aerienne) C);
                 }
