@@ -1,5 +1,7 @@
 package Kernel;
 
+import Models.Menu;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -20,11 +22,11 @@ public class Settings {
     public static String ExternalDB_FilePath(){
         return new MyFile(SettingsPath).ReadLines().get(1).split("=")[1].trim();
     }
-    public static void setDB_Type(String Type){
+    public static void setDB_Type(String type){
         MyFile F = new MyFile(SettingsPath);
         String SettingsTXT = F.Read();
         String[] arrOfStr = SettingsTXT.split("\n");
-        arrOfStr[0].split("=")[1] = " " + Type.trim();
+        arrOfStr[0]  = "DB_Type = " + type.trim();
         String NewText = String.join("\n", arrOfStr);
         F.OverWriteBy(NewText);
     }
@@ -32,7 +34,7 @@ public class Settings {
         MyFile F = new MyFile(SettingsPath);
         String SettingsTXT = F.Read();
         String[] arrOfStr = SettingsTXT.split("\n");
-        arrOfStr[2].split("=")[1] = " "+ External.trim();
+        arrOfStr[1] = "ExternalDB_Path = "+ External.trim();
         String NewText = String.join("\n", arrOfStr);
         F.OverWriteBy(NewText);
     }
@@ -44,4 +46,5 @@ public class Settings {
         }
         return "";
     }
+
 }

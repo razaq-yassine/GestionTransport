@@ -25,7 +25,7 @@ public class SocieteTransport {
         return DB.FindMarchandise(id_Marchandise);
     }
     public static boolean AjouterCargaison(double disrance_Cargaison, String Type){
-        if (Type.equals("Cargaison Aerienne")){
+        if (Type.equals("Aerienne")){
             return DB.AddCa_Aerienne(disrance_Cargaison);
         }
         return DB.AddCa_Routiere(disrance_Cargaison);
@@ -49,6 +49,12 @@ public class SocieteTransport {
     public static boolean EditMarchandise(int id_Marchandise, float poids, float volume, int id_Cargason){
         return DB.EditMarchandise(id_Marchandise, poids, volume, id_Cargason);
     }
+    public static boolean DeleteMarchandise(int id_Marchandise){
+        return DeleteMarchandise(id_Marchandise);
+    }
+    public static boolean DeeleteCargaison(int id_Cargaison){
+        return DB.DeeleteCargaison(id_Cargaison);
+    }
     public static ArrayList<Marchandise> GetAllMarchandises(){
         return DB.getMarchandises();
     }
@@ -59,20 +65,20 @@ public class SocieteTransport {
     public static String DB_Type(){
         return Settings.DB_Type();
     }
-    public String DB_File(){
+    public static String getExternalDB_File(){
         return Settings.ExternalDB_FilePath();
     }
-    public boolean setDB_Type(String type){
+    public static boolean setDB_Type(String type){
         Settings.setDB_Type(type);
+        DB.ReloadDB();
         return true;
     }
-    public boolean setExternalDB(String ExternalDBPath){
+    public static boolean setExternalDB(String ExternalDBPath){
         Settings.setExternalDB_FilePath(ExternalDBPath);
         return true;
     }
 
     public static void main(String[] args) {
         // test something here to check if problem from back end
-        Menu.cyan(Boolean.toString(register("anaadmin", "admin", "admin")));
     }
 }

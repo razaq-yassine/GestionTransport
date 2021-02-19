@@ -55,6 +55,10 @@ public class DB {
             DataBaseList = new MyFile(Settings.ExternalDB_FilePath()).ReadArrayList();
         }
     }
+    public static void ReloadDB(){
+        DataBaseList = new ArrayList();
+        loadDB();
+    }
     private static void saveDB(){
         String Db_Type = Settings.DB_Type();
         if (Db_Type.equalsIgnoreCase("External")){
@@ -134,7 +138,24 @@ public class DB {
         saveDB();
         return true;
     }
-
+    public static boolean DeleteMarchandise(int id_Marchandise){
+        Marchandise M = FindMarchandise(id_Marchandise);
+        getMarchandises().remove(M);
+        saveDB();
+        return true;
+    }
+    public static boolean DeeleteCargaison(int id_Cargaison){
+        Cargaison C = FindCargaison(id_Cargaison);
+        assert C != null;
+        if (C.Type().equalsIgnoreCase("Routiere")){
+            getCa_routieeres().remove(C);
+        }
+        if (C.Type().equalsIgnoreCase("Aerienne")){
+            getCa_aeriennes().remove(C);
+        }
+        saveDB();
+        return true;
+    }
     public static boolean AjouterMarchandiseDansCargaison(int id_marchandise, int id_cargaison) {
         Marchandise M = DB.FindMarchandise(id_marchandise);
         if (M!=null){
@@ -232,10 +253,8 @@ public class DB {
 
     public static void main(String[] args) {
         DB db = new DB();
-        Menu.cyan(Double.toString(FindCargaison(1003).getDistance_Cargaison()));
         Menu.cyan(FindCargaison(1003).Type());
-        EditCargaison(1003, 1);
-        Menu.cyan(Double.toString(FindCargaison(1003).getDistance_Cargaison()));
+        DeeleteCargaison(1003);
         Menu.cyan(FindCargaison(1003).Type());
 
     }
