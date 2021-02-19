@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 public class SocieteTransport {
-
+    static public DB d = new DB();
     public static User login(String username, String Password){
         return DB.LoginAttempt(username,Password);
         // test if User is null in gui means login-error
@@ -76,4 +76,7 @@ public class SocieteTransport {
         return true;
     }
 
+    public static void main(String[] args) {
+        // test something here to check if problem from back end
+    }
 }

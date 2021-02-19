@@ -92,7 +92,7 @@ public class CargaisonPage implements ActionListener {
         label10 = new JLabel("/////////////");
         label10.setFont(Labelinfo);
 
-        label11 = new JLabel("Type         :");
+        label11 = new JLabel("Type :");
         label11.setFont(Labelinfo);
 
         label12 = new JLabel("//////////////");
@@ -200,8 +200,8 @@ public class CargaisonPage implements ActionListener {
                 label4.setText("" + c.getDistance_Cargaison());
                 label6.setText("" + c.PoidsTotale());
                 label8.setText("" + c.VolumeTotale());
-                label10.setText("" + c.getCout_Cargaison());
-                label12.setText("" + c.getClass());
+                label10.setText("" + c.Cout());
+                label12.setText("" + c.Type());
 
             } catch (Exception E) {
                 JOptionPane.showMessageDialog(null, "ID invalide !!","Error",JOptionPane.ERROR_MESSAGE);

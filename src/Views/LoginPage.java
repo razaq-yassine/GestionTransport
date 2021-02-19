@@ -359,7 +359,7 @@ final public class LoginPage implements ActionListener {
             {
                 if (pw.length >= 5)
                 {
-                    if (SocieteTransport.login(login,Arrays.toString(pw)))
+                    if (SocieteTransport.login(login,String.valueOf(pw)) != null)
                     {
                         Message.setText("Success!!");
                         Message.setForeground(Color.GREEN);

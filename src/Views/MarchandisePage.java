@@ -149,7 +149,7 @@ public class MarchandisePage implements ActionListener {
             try {
                 int id = Integer.parseInt(text1.getText());
 
-                Marchandise m = SocieteTransport.ConsulterMarchandose(id);
+                Marchandise m = SocieteTransport.ConsulterMarchandise(id);
                 label2.setText("" + m.getPoids_Marchandise());
                 label4.setText("" + m.getVolume_Marchandie());
 
