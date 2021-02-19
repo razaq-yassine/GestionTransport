@@ -1,3 +1,2 @@
-RAM
-/run/media/yassine/239902B54C1F0D66/Yassine/SideProjects/LearningProjects/Java/GestionTransport/GestionTransport/src/Repository/DB
-/run/media/yassine/239902B54C1F0D66/Yassine/SideProjects/LearningProjects/Java/GestionTransport/GestionTransport/src/Repository/DB
+DB_Type = RAM
+ExternalDB_Path = /run/media/yassine/239902B54C1F0D66/Yassine/SideProjects/LearningProjects/Java/GestionTransport/GestionTransport/src/Repository/DB

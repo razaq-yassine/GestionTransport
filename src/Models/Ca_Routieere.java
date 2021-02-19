@@ -1,6 +1,8 @@
 package Models;
 
-public class Ca_Routieere extends Cargaison {
+import java.io.Serializable;
+
+public class Ca_Routieere extends Cargaison implements Serializable {
 
     public Ca_Routieere(double distance_Cargaison) {
         super(distance_Cargaison);

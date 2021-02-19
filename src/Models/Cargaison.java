@@ -3,7 +3,9 @@ package Models;
 import Repository.DB;
 import Repository.MyDatabase;
 
-public abstract class Cargaison {
+import java.io.Serializable;
+
+public abstract class Cargaison implements Serializable {
     private static int count = 1000;
     private int id_Cargaison;
     private double distance_Cargaison;

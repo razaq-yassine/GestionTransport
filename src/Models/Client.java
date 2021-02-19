@@ -2,7 +2,9 @@ package Models;
 
 import Repository.*;
 
-public class Client extends User {
+import java.io.Serializable;
+
+public class Client extends User implements Serializable {
     public Client(String username_User, String password_User) {
         super(username_User, password_User);
     }

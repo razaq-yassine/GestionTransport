@@ -328,7 +328,7 @@ final public class LoginPage implements ActionListener {
                     if (Arrays.equals(pw, pw2))
                     {
 //                        System.out.println(login + " , " + Arrays.toString(pw) + " , " + type);
-                        if(SocieteTransport.register(login,Arrays.toString(pw),type))
+                        if(SocieteTransport.register(login,String.valueOf(pw),type))
                         {
                             text3.setText("");
                             Pwtext3.setText("");

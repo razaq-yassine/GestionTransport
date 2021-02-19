@@ -1,7 +1,10 @@
 package Repository;
 
+import Kernel.MyFile;
 import Kernel.Settings;
+import Kernel.Validate;
 import Models.*;
+import org.jetbrains.annotations.Contract;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,8 +15,8 @@ public class DB {
         loadDB();
     }
     private static void loadDB(){
-
-        if (Settings.DB_Type().equals("RAM")){
+        String Db_Type = Settings.DB_Type();
+        if (Db_Type.equals("RAM")){
 
             ArrayList<Marchandise> marchandises = new ArrayList<>();
             ArrayList<Ca_Aerienne> ca_aeriennes = new ArrayList<>();
@@ -46,47 +49,70 @@ public class DB {
             DBList2.add(admins);
             DataBaseList = DBList2;
         }
-        else {
-
+        else if (Db_Type.equalsIgnoreCase("Local")){
+            DataBaseList = new MyFile(Settings.getLocalDb_Path()).ReadArrayList();
         }
+        else {
+            DataBaseList = new MyFile(Settings.ExternalDB_FilePath()).ReadArrayList();
+        }
+    }
+    private static void saveDB(){
+        String Db_Type = Settings.DB_Type();
+        if (Db_Type.equalsIgnoreCase("External")){
+            new MyFile(Settings.ExternalDB_FilePath()).OverWriteByObject(DataBaseList);
+        }
+        else if (Db_Type.equalsIgnoreCase("Local")){
+            new MyFile(Settings.getLocalDb_Path()).OverWriteByObject(DataBaseList);
+        }
+
     }
 
     public static ArrayList<Marchandise> getMarchandises() {
         return (ArrayList<Marchandise>) DataBaseList.get(0);
     }
 
-    public static ArrayList<Ca_Aerienne> getCa_aeriennes() {
+    private static ArrayList<Ca_Aerienne> getCa_aeriennes() {
         return (ArrayList<Ca_Aerienne>) DataBaseList.get(1);
     }
 
-    public static ArrayList<Ca_Routieere> getCa_routieeres() {
+    private static ArrayList<Ca_Routieere> getCa_routieeres() {
         return (ArrayList<Ca_Routieere>) DataBaseList.get(2);
     }
 
-    private static ArrayList<Client> getClients() {
+    public static ArrayList<Client> getClients() {
         return (ArrayList<Client>) DataBaseList.get(3);
     }
 
-    private static ArrayList<Admin> getAdmins() {
+    public static ArrayList<Admin> getAdmins() {
         return (ArrayList<Admin>) DataBaseList.get(4);
     }
 
     public static boolean AddMarchandise(float poids_Marchandise, float volume_Marchandie, int Id_Cargaison) {
         Marchandise M1 = new Marchandise(poids_Marchandise, volume_Marchandie);
         M1.setId_Cargaison(Id_Cargaison);
-        return getMarchandises().add(M1);
+        getMarchandises().add(M1);
+        saveDB();
+        return true;
     }
     public static boolean AddAdmin(String username_User, String password_User){
-        return getAdmins().add(new Admin(username_User,password_User));
+        getAdmins().add(new Admin(username_User,password_User));
+        saveDB();
+        return true;
     }
     public static boolean AddClient(String username_User, String password_User){
-        return getClients().add( new Client(username_User, password_User) );
+        getClients().add( new Client(username_User, password_User) );
+        saveDB();
+        return true;
     }
     public static boolean AddCa_Aerienne(double distance_Cargaison){
-        return getCa_aeriennes().add(new Ca_Aerienne(distance_Cargaison));
+        getCa_aeriennes().add(new Ca_Aerienne(distance_Cargaison));
+        saveDB();
+        return true;
     }
     public static boolean AddCa_Routiere(double distance_Cargaison){
-        return getCa_routieeres().add( new Ca_Routieere(distance_Cargaison) );
+        getCa_routieeres().add( new Ca_Routieere(distance_Cargaison) );
+        saveDB();
+        return true;
     }
 
     public static boolean EditCargaison(int id_cargaison, double distance_cargaison, String type) {
@@ -104,12 +130,32 @@ public class DB {
                     getCa_aeriennes().add((Ca_Aerienne) C);
                 }
             }
+            saveDB();
             return true;
         }
         return false;
     }
 
+    public static boolean EditMarchandise(int id_marchandise, float poids, float volume, int id_cargason) {
+        Marchandise M = FindMarchandise(id_marchandise);
+        if (M == null)
+            return false;
+        FindMarchandise(id_marchandise).setPoids_Marchandise(poids);
+        FindMarchandise(id_marchandise).setVolume_Marchandie(volume);
+        FindMarchandise(id_marchandise).setId_Cargaison(id_cargason);
+        saveDB();
+        return true;
+    }
 
+    public static boolean AjouterMarchandiseDansCargaison(int id_marchandise, int id_cargaison) {
+        Marchandise M = DB.FindMarchandise(id_marchandise);
+        if (M!=null){
+            M.setId_Cargaison(id_cargaison);
+            saveDB();
+            return true;
+        }
+        return false;
+    }
 
 
     public static Cargaison FindCargaison(int id_cargaison){
@@ -135,6 +181,7 @@ public class DB {
         }
         return null;
     }
+
     public static User FindUser(int id_User){
         for (int i=0; i<getClients().size(); i++){
             if (getClients().get(i).getId_User() == id_User)
@@ -146,7 +193,6 @@ public class DB {
         }
         return null;
     }
-
 
 
 
@@ -165,21 +211,19 @@ public class DB {
         }
         return null;
     }
+    public static boolean Register(String username, String password, String Type){
+        if(Validate.UsernameExists(username))
+            return false;
+        if(Type.equalsIgnoreCase("admin"))
+            return AddAdmin(username, password);
+        else return AddClient(username, password);
+    }
     public static int getNumberOfCargaisons() {
         return getCa_aeriennes().size() + getCa_routieeres().size();
     }
+
     public static int getNumberOFMarchandises() {
         return getMarchandises().size();
-    }
-
-    public static boolean EditMarchandise(int id_marchandise, float poids, float volume, int id_cargason) {
-        Marchandise M = FindMarchandise(id_marchandise);
-        if (M == null)
-            return false;
-        FindMarchandise(id_marchandise).setPoids_Marchandise(poids);
-        FindMarchandise(id_marchandise).setVolume_Marchandie(volume);
-        FindMarchandise(id_marchandise).setId_Cargaison(id_cargason);
-        return true;
     }
 
     public static ArrayList<Cargaison> getAllCargaisons() {
@@ -193,4 +237,9 @@ public class DB {
         }
         return Cargaisons;
     }
+
+    public static ArrayList<String> getDB() {
+        return DataBaseList;
+    }
+
 }

@@ -2,7 +2,9 @@ package Models;
 
 import Repository.MyDatabase;
 
-public abstract class User {
+import java.io.Serializable;
+
+public abstract class User implements Serializable {
     private static int counter =1000;
     private int id_User;
     private String username_User;

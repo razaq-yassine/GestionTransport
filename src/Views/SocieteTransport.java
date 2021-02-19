@@ -15,7 +15,7 @@ public class SocieteTransport {
         // test if User is null in gui means login-error
     }
     public static boolean register(String username, String Password, String Type){
-        return true;
+        return DB.Register(username, Password, Type);
         // You can add Password confirmation in method of GUI Class
     }
     public static Cargaison ConsulterCargaison(int id_Cargaison){
@@ -34,12 +34,7 @@ public class SocieteTransport {
         return DB.AddMarchandise(poids,volume,id_Cargason);
     }
     public static boolean AjouterMarchandiseDansCargaison(int id_Marchandise, int id_Cargaison){
-        Marchandise M = DB.FindMarchandise(id_Marchandise);
-        if (M!=null){
-            M.setId_Cargaison(id_Cargaison);
-            return true;
-        }
-        return false;
+        return DB.AjouterMarchandiseDansCargaison(id_Marchandise, id_Cargaison);
     }
     public static int NombreTotaleCargaisons(){
         return DB.getNumberOfCargaisons();
@@ -78,5 +73,6 @@ public class SocieteTransport {
 
     public static void main(String[] args) {
         // test something here to check if problem from back end
+        Menu.cyan(Boolean.toString(register("anaadmin", "admin", "admin")));
     }
 }

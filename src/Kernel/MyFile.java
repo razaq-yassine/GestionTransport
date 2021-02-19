@@ -1,12 +1,14 @@
 package Kernel;
 
+import Models.Marchandise;
 import Models.Menu;
+import Repository.DB;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class MyFile {
+public class MyFile implements Serializable{
     private String Path;
     public MyFile(String path){
         Path= path;
@@ -54,6 +56,18 @@ public class MyFile {
             e.printStackTrace();
         }
     }
+    public void OverWriteByObject(Object object){
+        try {
+
+            FileOutputStream fos = new FileOutputStream(Path);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(object);
+            oos.close();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+    }
     public void Append(String Text) {
         try{
             FileWriter fw = new FileWriter(Path, true);
@@ -65,5 +79,30 @@ public class MyFile {
             e.printStackTrace();
         }
     }
+    public ArrayList<ArrayList> ReadArrayList(){
+        try{
+            FileInputStream fis = new FileInputStream(Path);
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            ArrayList<ArrayList> MyArrayList = (ArrayList<ArrayList>) ois.readObject();
+            ois.close();
+            return MyArrayList;
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
 
+        return null;
+    }
+
+    public static void main(String[] args) {
+        DB db = new DB();
+        ArrayList<String> AL = DB.getDB();
+        MyFile F1 = new MyFile(Settings.getLocalDb_Path());
+        F1.OverWriteByObject(AL);
+        ArrayList<ArrayList> A1= F1.ReadArrayList();
+        Menu.cyan(Integer.toString(A1.size()));
+
+        Marchandise M = (Marchandise) A1.get(0).get(0);
+        M.Afficher();
+
+    }
 }

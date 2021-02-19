@@ -1,6 +1,8 @@
 package Models;
 
-public class Marchandise {
+import java.io.Serializable;
+
+public class Marchandise implements Serializable {
     static private int count = 1000;
     private int id_Marchandise;
     private float Poids_Marchandise;

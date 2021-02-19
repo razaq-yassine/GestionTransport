@@ -1,6 +1,8 @@
 package Models;
 
-public class Ca_Aerienne extends Cargaison{
+import java.io.Serializable;
+
+public class Ca_Aerienne extends Cargaison implements Serializable {
 
     public Ca_Aerienne(double distance_Cargaison) {
         super(distance_Cargaison);
