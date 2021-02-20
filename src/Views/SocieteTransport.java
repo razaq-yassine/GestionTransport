@@ -76,7 +76,14 @@ public class SocieteTransport {
         Settings.setExternalDB_FilePath(ExternalDBPath);
         return true;
     }
-
+    public static ArrayList<Marchandise> getMarchandisesOfCargaisom(int id_cargaison)
+    {
+        return DB.getMarchandisesOfCargaisom(id_cargaison);
+    }
+    public static ArrayList<Marchandise> getMarchandisesOrphelins()
+    {
+        return DB.getMarchandisesOrphelins();
+    }
     public static void main(String[] args) {
         // test something here to check if problem from back end
     }
