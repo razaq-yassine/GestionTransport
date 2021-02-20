@@ -147,6 +147,9 @@ final public class LoginPage implements ActionListener {
                 btnGrp.clearSelection();
             }
         });
+            // Init
+        if (SocieteTransport.DB_Type().equalsIgnoreCase("External"))
+            text2.setText(SocieteTransport.getExternalDB_File());
 
         //register
         text3 = new JTextField(15);
@@ -169,15 +172,21 @@ final public class LoginPage implements ActionListener {
         radioRam = new JRadioButton("Ram DataBase");
         radioRam.setBounds(25,80,130,25);
         radioRam.addActionListener(new LoginPage());
+        if (SocieteTransport.DB_Type().equalsIgnoreCase("RAM"))
+            radioRam.setSelected(true);
 
         radioFile = new JRadioButton("File DataBase");
         radioFile.setBounds(150,80,130,25);
         radioFile.addActionListener(new LoginPage());
-        radioFile.setSelected(true);
+        if (SocieteTransport.DB_Type().equalsIgnoreCase("Local"))
+            radioFile.setSelected(true);
 
         btnGrp = new ButtonGroup();
         btnGrp.add(radioRam);
         btnGrp.add(radioFile);
+            // Init state
+
+
         //register
         radioAdmin = new JRadioButton("Admin");
         radioAdmin.setBounds(25,80,130,25);
@@ -306,10 +315,6 @@ final public class LoginPage implements ActionListener {
             }
 
         }
-        if (e.getSource() == radioRam || e.getSource() == radioFile)
-        {
-            text2.setText("");
-        }
         if (e.getSource() == btnSaveRegister)
         {
             String login = text3.getText();
@@ -379,8 +384,26 @@ final public class LoginPage implements ActionListener {
             }
 
         }
-
-
+        if (e.getSource() == radioRam || e.getSource() == radioFile)
+        {
+            text2.setText("");
+        }
+        if (e.getSource() == btnSave)
+        {
+            if (!text2.getText().equals("")){
+                SocieteTransport.setExternalDB(text2.getText());
+                SocieteTransport.setDB_Type("External");
+                JOptionPane.showMessageDialog(null, "Parametre modifié avec succes","Success",JOptionPane.INFORMATION_MESSAGE);
+            }
+            if (radioRam.isSelected()){
+                SocieteTransport.setDB_Type("RAM");
+                JOptionPane.showMessageDialog(null, "Parametre modifié avec succes","Success",JOptionPane.INFORMATION_MESSAGE);
+            }
+            if (radioFile.isSelected()){
+                SocieteTransport.setDB_Type("Local");
+                JOptionPane.showMessageDialog(null, "Parametre modifié avec succes","Success",JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
     }
 
     private void emptyLoginComposant(boolean status)
