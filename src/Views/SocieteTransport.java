@@ -56,7 +56,7 @@ public class SocieteTransport {
         return DB.DeeleteCargaison(id_Cargaison);
     }
     public static ArrayList<Marchandise> GetAllMarchandises(){
-        return DB.getMarchandises();
+        return DB.getAllMarchandises();
     }
     public static ArrayList<Cargaison> GetAllCargaisons(){
         return DB.getAllCargaisons();

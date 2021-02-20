@@ -1,2 +1,2 @@
-DB_Type = RAM
+DB_Type = Local
 ExternalDB_Path = /run/media/yassine/239902B54C1F0D66/Yassine/SideProjects/LearningProjects/Java/GestionTransport/GestionTransport/src/Repository/DB

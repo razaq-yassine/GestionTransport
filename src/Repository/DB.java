@@ -1,11 +1,11 @@
 package Repository;
 
-import Kernel.MyFile;
-import Kernel.Settings;
-import Kernel.Validate;
+import Kernel.*;
 import Models.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 
 public class DB {
@@ -244,7 +244,10 @@ public class DB {
         for (int i=0; i<getCa_routieeres().size(); i++){
             Cargaisons.add((Cargaison) getCa_routieeres().get(i));
         }
-        return Cargaisons;
+        return CarIdSorter.Sort(Cargaisons);
+    }
+    public static ArrayList<Marchandise> getAllMarchandises(){
+        return MarIdSorter.Sort(getMarchandises());
     }
 
     public static ArrayList<String> getDB() {

@@ -1,7 +1,7 @@
 package Models;
 
 import Repository.DB;
-import Repository.MyDatabase;
+
 
 import java.io.Serializable;
 
@@ -76,4 +76,5 @@ public abstract class Cargaison implements Serializable {
         }
         return VolumeTotale;
     }
+
 }
