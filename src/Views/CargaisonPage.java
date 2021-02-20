@@ -35,7 +35,8 @@ public class CargaisonPage implements ActionListener {
     static private JTable dataTableC;
     static private DefaultTableModel model;
     //panel
-    static private JPanel info = new JPanel(), tablePanel = new JPanel(), contentPanel = new JPanel();
+    static private JPanel info = new JPanel();
+    static private JPanel contentPanel = new JPanel();
 
 
     private void initButtons()
@@ -207,7 +208,12 @@ public class CargaisonPage implements ActionListener {
                                 JOptionPane.showMessageDialog(null, "Cargaison a été modifier avec succès !!","Success",JOptionPane.INFORMATION_MESSAGE);
                             }
                             else
+                            {
+                                reset();
+                                check();
                                 JOptionPane.showMessageDialog(null, "Error !!","Error",JOptionPane.ERROR_MESSAGE);
+                            }
+
                         }
 
                         ArrayList<Object> data = new ArrayList<Object>();
@@ -229,6 +235,20 @@ public class CargaisonPage implements ActionListener {
                            JOptionPane.showMessageDialog(null, "Bravo !!","Success",JOptionPane.INFORMATION_MESSAGE);
                        }
                     }
+                    else if (model.getRowCount() == 1)
+                    {
+                        System.out.println("hi");
+                            ArrayList<Object> data = new ArrayList<Object>();
+                            data.add(model.getValueAt(row,0));
+                            data.add(model.getValueAt(row,1));
+                            data.add(model.getValueAt(row,2));
+                            data.add(model.getValueAt(row,3));
+                            data.add(model.getValueAt(row,4));
+                            data.add(model.getValueAt(row,5));
+                            model.removeRow(row);
+                            model.insertRow(row,new Object[]{"" + data.get(0), "" + data.get(1), "" + data.get(2),
+                                    "" + data.get(3), "" + data.get(4), "" + data.get(5), "Supprimer"});
+                    }
                     else {
                         reset();
                         check();
@@ -236,7 +256,9 @@ public class CargaisonPage implements ActionListener {
 
                     dataTableC.clearSelection();
 
-                } catch (Exception ignored){}
+                } catch (Exception ignored){
+                    reset();
+                    check();}
             }
         });
     }
@@ -261,6 +283,7 @@ public class CargaisonPage implements ActionListener {
         initButtons();
         initTables();
 
+        contentPanel = new JPanel();
         contentPanel.setLayout(null);
         contentPanel.add(Title);
         contentPanel.add(btnBack);
@@ -271,13 +294,14 @@ public class CargaisonPage implements ActionListener {
 //        contentPanel.add(label0);
         contentPanel.add(label13);
 
-        tablePanel = new JPanel();
+        JPanel tablePanel = new JPanel();
         tablePanel.setLayout(new BoxLayout(tablePanel, BoxLayout.Y_AXIS));
         tablePanel.setBounds(20, 100, 550, 280);
         tablePanel.add(new JScrollPane(dataTableC));
 
         contentPanel.add(tablePanel);
 
+        info = new JPanel();
         info.setLayout(new BoxLayout(info, BoxLayout.Y_AXIS));
         info.setBounds(80, 140,350,180);
         info.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -353,10 +377,19 @@ public class CargaisonPage implements ActionListener {
                     }
                     model.removeRow(0);
                 }
+                if (data.size()>0)
                 model.addRow(new Object[]{"" + data.get(0), "" + data.get(1), "" + data.get(2),
                         "" + data.get(3), "" + data.get(4), "" + data.get(5), "Supprimer"});
+                else
+                {
+                    JOptionPane.showMessageDialog(null, "ID invalide !!","Error",JOptionPane.ERROR_MESSAGE);
+                    text1.setText("");
+                    check();
+                }
             } catch (Exception E) {
                 JOptionPane.showMessageDialog(null, "ID invalide !!","Error",JOptionPane.ERROR_MESSAGE);
+                text1.setText("");
+                check();
             }
 
         }
