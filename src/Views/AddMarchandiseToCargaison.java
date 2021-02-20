@@ -1,9 +1,13 @@
 package Views;
 
+import Models.Cargaison;
+import Models.Marchandise;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class AddMarchandiseToCargaison implements ActionListener {
 
@@ -23,6 +27,8 @@ public class AddMarchandiseToCargaison implements ActionListener {
     static private JLabel Title,message, label1, label2, label3;
     //list
     static private JComboBox listC, listM;
+    //model
+    DefaultComboBoxModel modelListC;
 
     private void initButtons()
     {
@@ -68,11 +74,16 @@ public class AddMarchandiseToCargaison implements ActionListener {
 
     private void initComboBox()
     {
+        ArrayList<Cargaison> c = SocieteTransport.GetAllCargaisons();
+        ArrayList<Marchandise> m = SocieteTransport.GetAllMarchandises();
+
         listC = new JComboBox();
         listC.setBounds(130, 80, 165, 25);
+        c.forEach(car -> listC.addItem(""+car.getId_Cargaison()) );
 
         listM = new JComboBox();
         listM.setBounds(130, 130, 165, 25);
+        m.forEach(mar -> listM.addItem(""+mar.getId_Marchandise()) );
     }
 
     JPanel initPanels()
