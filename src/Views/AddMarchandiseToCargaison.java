@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class AddMarchandiseToCargaison implements ActionListener {
 
@@ -75,7 +76,7 @@ public class AddMarchandiseToCargaison implements ActionListener {
     private void initComboBox()
     {
         ArrayList<Cargaison> c = SocieteTransport.GetAllCargaisons();
-        ArrayList<Marchandise> m = SocieteTransport.GetAllMarchandises();
+        ArrayList<Marchandise> m = SocieteTransport.getMarchandisesOrphelins();
 
         listC = new JComboBox();
         listC.setBounds(130, 80, 165, 25);
@@ -111,6 +112,23 @@ public class AddMarchandiseToCargaison implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == btnAdd)
+        {
+            try {
+                int marchandise = Integer.parseInt(listM.getSelectedItem().toString());
+                int cargaison = Integer.parseInt(listC.getSelectedItem().toString());
+                if ( SocieteTransport.AjouterMarchandiseDansCargaison(marchandise,cargaison) )
+                {
+                    JOptionPane.showMessageDialog(null, "Bravo !!","Success",JOptionPane.INFORMATION_MESSAGE);
+                    listM.removeAllItems();
+                    ArrayList<Marchandise> m = SocieteTransport.getMarchandisesOrphelins();
+                    m.forEach(mar -> listM.addItem(""+mar.getId_Marchandise()) );
+
+                } else JOptionPane.showMessageDialog(null, "Error !!","Error",JOptionPane.ERROR_MESSAGE);
+            } catch (Exception E){
+                JOptionPane.showMessageDialog(null, "Error !!","Error",JOptionPane.ERROR_MESSAGE);
+            }
+        }
         if (e.getSource() == btnBack)
         {
             HomePage homeP = new HomePage();

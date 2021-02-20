@@ -1,11 +1,14 @@
 package Views;
 
+import Models.Cargaison;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class AddMarchandisePage implements ActionListener {
@@ -77,8 +80,11 @@ public class AddMarchandisePage implements ActionListener {
 
     private void initComboBox()
     {
-        listC = new JComboBox(new String[]{"1", "2"});
+        listC = new JComboBox();
         listC.setBounds(100, 180, 165, 25);
+        listC.addItem("-------");
+        ArrayList<Cargaison> c = SocieteTransport.GetAllCargaisons();
+        c.forEach(car -> listC.addItem(""+car.getId_Cargaison()) );
     }
     private void initTextField()
     {
