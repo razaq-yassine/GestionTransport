@@ -255,10 +255,6 @@ public class DB {
     }
 
     public static void main(String[] args) {
-        DB db = new DB();
-        Menu.cyan(FindCargaison(1003).Type());
-        DeeleteCargaison(1003);
-        Menu.cyan(FindCargaison(1003).Type());
 
     }
 }

@@ -1,5 +1,6 @@
 package Views;
 
+import Kernel.MySession;
 import Models.Cargaison;
 
 import javax.swing.*;
@@ -172,8 +173,7 @@ public class CargaisonPage implements ActionListener {
             public boolean isCellEditable(int row, int column) {
                 if (column == 0 || column == 2 || column == 3 || column == 4 || column == 5 )
                     return false;
-                else
-                    return true;
+                return MySession.User().getType_User() == -1;
             };
         };;
         // Create a couple of columns
@@ -200,7 +200,6 @@ public class CargaisonPage implements ActionListener {
             public void focusGained(FocusEvent e) {
                 int row = dataTableC.getSelectedRow();
                 int column = dataTableC.getSelectedColumn();
-                ArrayList<Object> data = new ArrayList<Object>();;
                 try {
                     if (dataTableC.isColumnSelected(1))
                     {
@@ -224,12 +223,15 @@ public class CargaisonPage implements ActionListener {
 
                         }
                     } else if (dataTableC.isColumnSelected(6)) {
-
-                       int rep = JOptionPane.showConfirmDialog(null, "Etes-vous sur de vouloir supprimer Cargaison : " + dataTableC.getValueAt(row, 0).toString());
-                       if (rep == 0)
-                       {
-                           JOptionPane.showMessageDialog(null, "Bravo !!","Success",JOptionPane.INFORMATION_MESSAGE);
-                       }
+                        if (MySession.User().getType_User() == -1)
+                        {
+                           int rep = JOptionPane.showConfirmDialog(null, "Etes-vous sur de vouloir supprimer Cargaison : " + dataTableC.getValueAt(row, 0).toString());
+                           if (rep == 0)
+                           {
+                               JOptionPane.showMessageDialog(null, "Bravo !!","Success",JOptionPane.INFORMATION_MESSAGE);
+                           }
+                        }
+                        else JOptionPane.showMessageDialog(null, "Vous n'avez pas le previlege pour ceci !!","Error",JOptionPane.ERROR_MESSAGE);
                     }
                     else {
                         if (model.getRowCount() == c.size())

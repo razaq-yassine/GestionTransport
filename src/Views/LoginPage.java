@@ -1,5 +1,8 @@
 package Views;
 
+import Kernel.MySession;
+import Models.User;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -364,7 +367,8 @@ final public class LoginPage implements ActionListener {
             {
                 if (pw.length >= 5)
                 {
-                    if (SocieteTransport.login(login,String.valueOf(pw)) != null)
+                    MySession.setCurrentUser(SocieteTransport.login(login,String.valueOf(pw)));
+                    if (MySession.User() != null)
                     {
                         Message.setText("Success!!");
                         Message.setForeground(Color.GREEN);

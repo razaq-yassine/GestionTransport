@@ -1,14 +1,15 @@
 package Views;
 
+import Kernel.MySession;
+import Models.User;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 
 public class HomePage implements ActionListener {
-
-    HomePage() {};
+    HomePage() {}
 
     //size
     static int width = 450;
@@ -54,7 +55,12 @@ public class HomePage implements ActionListener {
 
     private void initLabels()
     {
-        Title = new JLabel("Bienvenue à votre interface admin");
+        String userType;
+        if (MySession.User().getType_User() == -1)
+             userType = "Admin";
+        else userType = "Client";
+
+        Title = new JLabel("Bienvenue à votre interface "+ userType);
         Title.setBounds(70, 20, 300, 25);
         Title.setFont(Titlefont);
 
@@ -74,9 +80,12 @@ public class HomePage implements ActionListener {
         contentPanel.add(Title);
         contentPanel.add(btnCargaison);
         contentPanel.add(btnMarchandise);
-        contentPanel.add(btnAddCargaison);
-        contentPanel.add(btnAddMarchandise);
-        contentPanel.add(btnMarchandiseToCargaison);
+        if (MySession.User().getType_User() == -1)
+        {
+            contentPanel.add(btnAddCargaison);
+            contentPanel.add(btnAddMarchandise);
+            contentPanel.add(btnMarchandiseToCargaison);
+        }
         contentPanel.add(labelC);
 
         contentPanel.setBorder(BorderFactory.createTitledBorder("Home"));
