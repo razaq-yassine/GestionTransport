@@ -29,14 +29,13 @@ public class CargaisonPage implements ActionListener {
     //Buttons
     static private JButton btnSearch, btnBack;
     //Labels
-    static private JLabel Title,label, message, label0, label1, label2, label3, label4, label5, label6, label7, label8, label9, label10, label11, label12, label13;
+    static private JLabel Title,label, message, label13;
     //text field
     static private JTextField text1;
     //table
     static private JTable dataTableC;
     static private DefaultTableModel model;
     //panel
-    static private JPanel info = new JPanel();
     static private JPanel contentPanel = new JPanel();
 
 
@@ -67,46 +66,6 @@ public class CargaisonPage implements ActionListener {
         message.setBounds(80, 70, 180, 25);
         message.setFont(Labelfont);
         message.setForeground(Color.red);
-
-//        label0 = new JLabel("Cargaison Info");
-//        label0.setBounds(110, 100, 300, 25);
-//        label0.setFont(Titlefont2);
-
-        label1 = new JLabel("Id cargaison  :");
-        label1.setFont(Labelinfo);
-
-        label2 = new JLabel("////////////");
-        label2.setFont(Labelinfo);
-
-        label3 = new JLabel("Distance      :");
-        label3.setFont(Labelinfo);
-
-        label4 = new JLabel("////////////");
-        label4.setFont(Labelinfo);
-
-        label5 = new JLabel("Poid totale   :");
-        label5.setFont(Labelinfo);
-
-        label6 = new JLabel("/////////////");
-        label6.setFont(Labelinfo);
-
-        label7 = new JLabel("Volume totale :");
-        label7.setFont(Labelinfo);
-
-        label8 = new JLabel("/////////////");
-        label8.setFont(Labelinfo);
-
-        label9 = new JLabel("Cout cargaison :");
-        label9.setFont(Labelinfo);
-
-        label10 = new JLabel("/////////////");
-        label10.setFont(Labelinfo);
-
-        label11 = new JLabel("Type :");
-        label11.setFont(Labelinfo);
-
-        label12 = new JLabel("//////////////");
-        label12.setFont(Labelinfo);
 
         label13 = new JLabel("EMSI © 2020-2021 All rights reserved ;)");
         label13.setBounds(10, 440, 350, 25);
@@ -184,7 +143,6 @@ public class CargaisonPage implements ActionListener {
         model.addColumn("Cout");
         model.addColumn("Type");
         model.addColumn("Action");
-
         // Append a row
         for (Cargaison car : c) {
             model.addRow(new Object[]{"" + car.getId_Cargaison(), "" + car.getDistance_Cargaison(), "" + car.PoidsTotale(),
@@ -201,16 +159,15 @@ public class CargaisonPage implements ActionListener {
                 int row = dataTableC.getSelectedRow();
                 int column = dataTableC.getSelectedColumn();
                 try {
+                    // new value
+                    double distance = Double.parseDouble(dataTableC.getValueAt(row, 1).toString());
+                    String type = dataTableC.getValueAt(row, 5).toString();
+                    // id is the primary key of my DB
+                    int id = Integer.parseInt(dataTableC.getValueAt(row, 0).toString());
                     if (dataTableC.isColumnSelected(1))
                     {
                         if (dataTableC.isCellSelected(row,column))
                         {
-                            // new value
-                            double distance = Double.parseDouble(dataTableC.getValueAt(row, 1).toString());
-                            String type = dataTableC.getValueAt(row, 5).toString();
-                            // id is the primary key of my DB
-                            int id = Integer.parseInt(dataTableC.getValueAt(row, 0).toString());
-                            System.out.println(id + " / " + distance + "/" +type);
                             // update
                             if ( SocieteTransport.EditCargaison(id, distance) )
                             {
@@ -228,7 +185,14 @@ public class CargaisonPage implements ActionListener {
                            int rep = JOptionPane.showConfirmDialog(null, "Etes-vous sur de vouloir supprimer Cargaison : " + dataTableC.getValueAt(row, 0).toString());
                            if (rep == 0)
                            {
-                               JOptionPane.showMessageDialog(null, "Bravo !!","Success",JOptionPane.INFORMATION_MESSAGE);
+                               if (SocieteTransport.DeeleteCargaison(id))
+                               {
+                                   model.removeRow(row);
+                                   JOptionPane.showMessageDialog(null, "Bravo !!","Success",JOptionPane.INFORMATION_MESSAGE);
+                                   text1.setText("");
+                                   reset();
+                                   check();
+                               } else JOptionPane.showMessageDialog(null, "Vous n'avez pas le previlege pour ceci !!","Error",JOptionPane.ERROR_MESSAGE);
                            }
                         }
                         else JOptionPane.showMessageDialog(null, "Vous n'avez pas le previlege pour ceci !!","Error",JOptionPane.ERROR_MESSAGE);
@@ -244,8 +208,11 @@ public class CargaisonPage implements ActionListener {
                     dataTableC.clearSelection();
 
                 } catch (Exception ignored){
-                    reset();
-                    check();
+                    if (model.getRowCount() != 1)
+                    {
+                        reset();
+                        check();
+                    }
                 }
             }
         });
@@ -288,50 +255,6 @@ public class CargaisonPage implements ActionListener {
         tablePanel.add(new JScrollPane(dataTableC));
 
         contentPanel.add(tablePanel);
-
-        info = new JPanel();
-        info.setLayout(new BoxLayout(info, BoxLayout.Y_AXIS));
-        info.setBounds(80, 140,350,180);
-        info.setBorder(BorderFactory.createLineBorder(Color.black));
-
-        JPanel field1 = new JPanel();
-        field1.add(label1);
-        field1.add(label2);
-        field1.setMaximumSize( field1.getPreferredSize() );
-        info.add(field1);
-
-        JPanel field2 = new JPanel();
-        field2.add(label3);
-        field2.add(label4);
-        field2.setMaximumSize( field2.getPreferredSize() );
-        info.add(field2);
-
-        JPanel field3 = new JPanel();
-        field3.add(label5);
-        field3.add(label6);
-        field3.setMaximumSize( field3.getPreferredSize() );
-        info.add(field3);
-
-        JPanel field4 = new JPanel();
-        field4.add(label7);
-        field4.add(label8);
-        field4.setMaximumSize( field4.getPreferredSize() );
-        info.add(field4);
-
-        JPanel field5 = new JPanel();
-        field5.add(label9);
-        field5.add(label10);
-        field5.setMaximumSize( field5.getPreferredSize() );
-        info.add(field5);
-
-        JPanel field6 = new JPanel();
-        field6.add(label11);
-        field6.add(label12);
-        field6.setMaximumSize( field6.getPreferredSize() );
-        info.add(field6);
-//        info.setVisible(false);
-
-//        contentPanel.add(info);
         contentPanel.setBorder(BorderFactory.createTitledBorder("Cargaison"));
 
         return contentPanel;
@@ -344,7 +267,7 @@ public class CargaisonPage implements ActionListener {
             try {
                 check();
                 int id = Integer.parseInt(text1.getText());
-
+                boolean verify = false;
                 ArrayList<Object> data = new ArrayList<Object>();
                 while (true)
                 {
@@ -362,10 +285,11 @@ public class CargaisonPage implements ActionListener {
                         data.add(model.getValueAt(0,3));
                         data.add(model.getValueAt(0,4));
                         data.add(model.getValueAt(0,5));
+                        verify = true;
                     }
                     model.removeRow(0);
                 }
-                if (data.size()>0)
+                if (verify)
                 model.addRow(new Object[]{"" + data.get(0), "" + data.get(1), "" + data.get(2),
                         "" + data.get(3), "" + data.get(4), "" + data.get(5), "Supprimer"});
                 else

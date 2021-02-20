@@ -50,7 +50,7 @@ public class SocieteTransport {
         return DB.EditMarchandise(id_Marchandise, poids, volume, id_Cargason);
     }
     public static boolean DeleteMarchandise(int id_Marchandise){
-        return DeleteMarchandise(id_Marchandise);
+        return DB.DeleteMarchandise(id_Marchandise);
     }
     public static boolean DeeleteCargaison(int id_Cargaison){
         return DB.DeeleteCargaison(id_Cargaison);
