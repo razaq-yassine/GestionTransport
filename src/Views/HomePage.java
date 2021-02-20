@@ -1,6 +1,7 @@
 package Views;
 
 import Kernel.MySession;
+import Kernel.Settings;
 import Models.User;
 
 import javax.swing.*;
@@ -20,7 +21,7 @@ public class HomePage implements ActionListener {
     static private Font Labelfont = new Font("Candara", Font.BOLD, 14);
 
     //Buttons
-    static private JButton btnCargaison, btnMarchandise, btnAddCargaison, btnAddMarchandise, btnMarchandiseToCargaison;
+    static private JButton btnCargaison, btnMarchandise, btnAddCargaison, btnAddMarchandise, btnMarchandiseToCargaison, btnLogout;
     //Labels
     static private JLabel Title, labelC;
 
@@ -51,6 +52,11 @@ public class HomePage implements ActionListener {
         btnMarchandiseToCargaison.setFont(Btnfont);
         btnMarchandiseToCargaison.setBounds(100, 230, 240, 50);
         btnMarchandiseToCargaison.addActionListener(new HomePage());
+
+        btnLogout = new JButton("Logout");
+        btnLogout.setFont(Btnfont);
+        btnLogout.setBounds(290, 330, 100, 25);
+        btnLogout.addActionListener(new HomePage());
     }
 
     private void initLabels()
@@ -87,6 +93,7 @@ public class HomePage implements ActionListener {
             contentPanel.add(btnMarchandiseToCargaison);
         }
         contentPanel.add(labelC);
+        contentPanel.add(btnLogout);
 
         contentPanel.setBorder(BorderFactory.createTitledBorder("Home"));
 
@@ -114,6 +121,11 @@ public class HomePage implements ActionListener {
         if (e.getSource() == btnMarchandiseToCargaison) {
             AddMarchandiseToCargaison addMC = new AddMarchandiseToCargaison();
             Layout.getInstance("Ajouter Marchandise à Cargaison").switchPanel(addMC.initPanels(), AddMarchandiseToCargaison.width, AddMarchandiseToCargaison.height);
+        }
+        if (e.getSource() == btnLogout){
+            MySession.destroyCurrentUser();
+            LoginPage loginPage = new LoginPage();
+            Layout.getInstance("test").switchPanel(loginPage.initPanels(), LoginPage.width, LoginPage.height);
         }
     }
 }

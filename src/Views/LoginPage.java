@@ -373,7 +373,7 @@ final public class LoginPage implements ActionListener {
                         Message.setText("Success!!");
                         Message.setForeground(Color.GREEN);
                         HomePage homeP = new HomePage();
-                        Layout.getInstance("test").switchPanel(homeP.initPanels(), HomePage.width, HomePage.height);
+                        Layout.getInstance("Societe Transport").switchPanel(homeP.initPanels(), HomePage.width, HomePage.height);
 
                     } else {
                         JOptionPane.showMessageDialog(null, "Identifiant et / ou mot de passe incorrect(s) !","Error",JOptionPane.ERROR_MESSAGE);

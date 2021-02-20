@@ -7,7 +7,6 @@ public class Layout extends JFrame {
 
     private static Layout instance;
 
-    private Layout() {}
 
     private Container mainPane ;
     private LoginPage loginP = new LoginPage();
