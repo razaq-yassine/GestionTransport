@@ -166,7 +166,16 @@ public class CargaisonPage implements ActionListener {
         ArrayList<Cargaison> c = SocieteTransport.GetAllCargaisons();
 
         model = new DefaultTableModel();
-        dataTableC = new JTable(model);
+        dataTableC = new JTable(model) {
+            private static final long serialVersionUID = 1L;
+
+            public boolean isCellEditable(int row, int column) {
+                if (column == 0 || column == 2 || column == 3 || column == 4 || column == 5 )
+                    return false;
+                else
+                    return true;
+            };
+        };;
         // Create a couple of columns
         model.addColumn("ID");
         model.addColumn("Distance");
@@ -191,6 +200,7 @@ public class CargaisonPage implements ActionListener {
             public void focusGained(FocusEvent e) {
                 int row = dataTableC.getSelectedRow();
                 int column = dataTableC.getSelectedColumn();
+                ArrayList<Object> data = new ArrayList<Object>();;
                 try {
                     if (dataTableC.isColumnSelected(1))
                     {
@@ -206,59 +216,35 @@ public class CargaisonPage implements ActionListener {
                             if ( SocieteTransport.EditCargaison(id, distance) )
                             {
                                 JOptionPane.showMessageDialog(null, "Cargaison a été modifier avec succès !!","Success",JOptionPane.INFORMATION_MESSAGE);
-                            }
-                            else
-                            {
+                            } else {
                                 reset();
                                 check();
                                 JOptionPane.showMessageDialog(null, "Error !!","Error",JOptionPane.ERROR_MESSAGE);
                             }
 
                         }
+                    } else if (dataTableC.isColumnSelected(6)) {
 
-                        ArrayList<Object> data = new ArrayList<Object>();
-                        data.add(model.getValueAt(row,0));
-                        data.add(model.getValueAt(row,1));
-                        data.add(model.getValueAt(row,2));
-                        data.add(model.getValueAt(row,3));
-                        data.add(model.getValueAt(row,4));
-                        data.add(model.getValueAt(row,5));
-                        model.removeRow(row);
-                        model.insertRow(row,new Object[]{"" + data.get(0), "" + data.get(1), "" + data.get(2),
-                                "" + data.get(3), "" + data.get(4), "" + data.get(5), "Supprimer"});
-                    }
-                     else if (dataTableC.isColumnSelected(6))
-                    {
                        int rep = JOptionPane.showConfirmDialog(null, "Etes-vous sur de vouloir supprimer Cargaison : " + dataTableC.getValueAt(row, 0).toString());
                        if (rep == 0)
                        {
                            JOptionPane.showMessageDialog(null, "Bravo !!","Success",JOptionPane.INFORMATION_MESSAGE);
                        }
                     }
-                    else if (model.getRowCount() == 1)
-                    {
-                        System.out.println("hi");
-                            ArrayList<Object> data = new ArrayList<Object>();
-                            data.add(model.getValueAt(row,0));
-                            data.add(model.getValueAt(row,1));
-                            data.add(model.getValueAt(row,2));
-                            data.add(model.getValueAt(row,3));
-                            data.add(model.getValueAt(row,4));
-                            data.add(model.getValueAt(row,5));
-                            model.removeRow(row);
-                            model.insertRow(row,new Object[]{"" + data.get(0), "" + data.get(1), "" + data.get(2),
-                                    "" + data.get(3), "" + data.get(4), "" + data.get(5), "Supprimer"});
-                    }
                     else {
-                        reset();
-                        check();
-                    }
+                        if (model.getRowCount() == c.size())
+                        {
+                            reset();
+                            check();
+                        }
 
+                    }
                     dataTableC.clearSelection();
 
                 } catch (Exception ignored){
                     reset();
-                    check();}
+                    check();
+                }
             }
         });
     }
