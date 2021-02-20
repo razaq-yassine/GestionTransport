@@ -5,8 +5,7 @@ import Models.*;
 import Repository.DB;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+
 
 public class SocieteTransport {
     static public DB d = new DB();
@@ -50,7 +49,7 @@ public class SocieteTransport {
         return DB.EditMarchandise(id_Marchandise, poids, volume, id_Cargason);
     }
     public static boolean DeleteMarchandise(int id_Marchandise){
-        return DeleteMarchandise(id_Marchandise);
+        return DB.DeleteMarchandise(id_Marchandise);
     }
     public static boolean DeeleteCargaison(int id_Cargaison){
         return DB.DeeleteCargaison(id_Cargaison);

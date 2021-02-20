@@ -250,11 +250,29 @@ public class DB {
         return MarIdSorter.Sort(getMarchandises());
     }
 
-    public static ArrayList<String> getDB() {
-        return DataBaseList;
+    public static ArrayList<Marchandise> getMarchandisesOfCargaisom(int id_cargaison){
+        ArrayList<Marchandise> marchandises = new ArrayList<>();
+        for (Marchandise mar : getAllMarchandises())
+            {
+                if (mar.getId_Cargaison() == id_cargaison)
+                    marchandises.add(mar);
+            }
+        return marchandises;
     }
-
+    public static ArrayList<Marchandise> getMarchandisesOrphelins(){
+        ArrayList<Marchandise> marchandises = new ArrayList<>();
+        for (Marchandise mar : getAllMarchandises())
+        {
+            if (mar.getId_Cargaison() == 0){
+                marchandises.add(mar);
+            }
+        }
+        return marchandises;
+    }
     public static void main(String[] args) {
-
+        DB db = new DB();
+        FindMarchandise(1001).Afficher();
+//        DeleteMarchandise(1001);
+//        FindMarchandise(1001).Afficher();
     }
 }
