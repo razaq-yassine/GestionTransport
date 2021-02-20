@@ -94,7 +94,15 @@ public class MyFile implements Serializable{
     }
 
     public static void main(String[] args) {
+        DB db = new DB();
+        ArrayList<String> AL = DB.getDB();
+        MyFile F1 = new MyFile(Settings.getLocalDb_Path());
+        F1.OverWriteByObject(AL);
+//        ArrayList<ArrayList> A1= F1.ReadArrayList();
+//        Menu.cyan(Integer.toString(A1.size()));
 
+//        Marchandise M = (Marchandise) A1.get(0).get(0);
+//        M.Afficher();
 
     }
 }

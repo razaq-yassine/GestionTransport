@@ -271,8 +271,11 @@ public class DB {
     }
     public static void main(String[] args) {
         DB db = new DB();
-        FindMarchandise(1001).Afficher();
 //        DeleteMarchandise(1001);
-//        FindMarchandise(1001).Afficher();
+        FindMarchandise(1001).Afficher();
+    }
+
+    public static ArrayList<String> getDB() {
+        return DataBaseList;
     }
 }
