@@ -154,7 +154,11 @@ public class AddMarchandisePage implements ActionListener {
                 {
                     float d = Float.parseFloat(text1.getText());
                     float v = Float.parseFloat(text2.getText());
-                    int c = Integer.parseInt((String) Objects.requireNonNull(listC.getSelectedItem()));
+                    int c ;
+                    if (listC.getSelectedIndex() == 0)
+                        c = 0;
+                    else
+                        c = Integer.parseInt((String) Objects.requireNonNull(listC.getSelectedItem()));
                     if (SocieteTransport.AjouterMarchandise(d,v,c))
                     {
                         text1.setText("");
