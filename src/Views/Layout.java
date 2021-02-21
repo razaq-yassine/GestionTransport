@@ -13,7 +13,7 @@ public class Layout extends JFrame {
 //    private HomePage homeP = new HomePage();
 //    private CargaisonPage carP = new CargaisonPage();
 
-    private Layout(String Title){
+    public Layout(String Title){
 //        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 //        int width = (int) screenSize.getWidth();
 //        int height = (int) screenSize.getHeight();
