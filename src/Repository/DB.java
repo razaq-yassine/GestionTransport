@@ -153,6 +153,8 @@ public class DB {
         if (C.Type().equalsIgnoreCase("Aerienne")){
             getCa_aeriennes().remove(C);
         }
+        ArrayList<Marchandise> marchandises = getMarchandisesOfCargaisom(id_Cargaison);
+        marchandises.forEach(marchandise -> marchandise.setId_Cargaison(0));
         saveDB();
         return true;
     }
